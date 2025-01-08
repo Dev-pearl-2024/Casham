@@ -2,7 +2,7 @@
   "expo": {
     "name": "Casham",
     "scheme": "casham",
-    "slug": "Casham",
+    "slug": "casham",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,17 +21,22 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.casham"
+      "package": "com.casham",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "a1074a83-9bc3-4732-9348-0744d73a734d"
+        "projectId": "aacc157e-3de9-4383-8994-b554baf4e38f"
       }
     },
-    "owner": "pankajisrani123",
+    "owner": "dev-pearl-2024",
     "plugins": [
       [
         "expo-build-properties",

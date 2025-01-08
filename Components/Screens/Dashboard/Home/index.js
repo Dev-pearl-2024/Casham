@@ -97,7 +97,7 @@ export default Home = ({ props }) => {
             }
         }).then((rs) => {
             if (rs.status == 200) {
-                console.log("transitiondata->", rs.data[0]);
+                console.log("transitiondata->", rs.data);
                 setTransactionData(rs.data);
                 // setData(rs.data)
             }

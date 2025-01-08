@@ -10,6 +10,8 @@ const QR = ({ visible, dismiss }) => {
 
     const getQR = async () => {
         const qr = await AsyncStorage.getItem("qr")
+        console.log("qr",qr);
+
         setQRValue(qr)
     }
 

@@ -20,6 +20,7 @@ import CustomTextInput from "../../../Elements/UIElements/TextInput"
 import CustomButton from "../../../Elements/UIElements/Button"
 import CheckSession from "../../../API/CheckSession"
 import { Stagger } from "@animatereactnative/stagger"
+import QR_share_freinds from "../../../Elements/UIElements/QR_Code_gallary_save"
 
 export default Settings = ({ props }) => {
 
@@ -131,6 +132,7 @@ export default Settings = ({ props }) => {
     }
 
     const [qrvisible, setQrvisible] = useState(false)
+    const [inviteFriendsVisible, setInviteFriendsvisible] = useState(false)
 
 
     const TakePhoto = async () => {
@@ -585,7 +587,7 @@ export default Settings = ({ props }) => {
                     justifyContent: 'space-between', paddingHorizontal: 25,
                     borderRadius: 10, marginTop: 30
                 }} onPress={() => {
-
+                    setInviteFriendsvisible(true);
                 }} activeOpacity={0.6}>
                     <MaterialIcons name="person-add" color={'black'} size={25} />
                     <Text style={{
@@ -648,6 +650,9 @@ export default Settings = ({ props }) => {
                 } red />
             <QR visible={qrvisible} dismiss={() => {
                 setQrvisible(false)
+            }} />
+            <QR_share_freinds visible={inviteFriendsVisible} dismiss={() => {
+                setInviteFriendsvisible(false)
             }} />
             {/* <UpdateSheet visible /> */}
         </SafeAreaView>
