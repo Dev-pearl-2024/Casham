@@ -21,6 +21,8 @@ const Login = (props) => {
     const [snackVisible, setSnackVisible] = useState(false);
     const [snackMessage, setSnackMessage] = useState("");
 
+    console.log("login")
+
     const onDismissSnackbar = () => {
         setSnackVisible(false);
     };
@@ -61,52 +63,52 @@ const Login = (props) => {
         RequestLocation()
     }, [])
 
-   
+
 
     const SendOTP = async () => {
         try {
             if (mobile) {
-                
+                // Request location permission
                 Location.requestForegroundPermissionsAsync().then((rs) => {
                     if (rs.granted) {
-                        Location.getLastKnownPositionAsync().then(async (rs) => {
+                        // Use getCurrentPositionAsync as a fallback to get the current position if last known is unavailable
+                        Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High }).then(async (rs) => {
                             const latitude = rs.coords.latitude.toString();
                             const longitude = rs.coords.longitude.toString();
 
                             const formData = new FormData();
-
                             formData.append("phoneNumber", selectedCode + mobile);
                             formData.append("longitude", longitude);
                             formData.append("latitude", latitude);
-                
+
+                            // Send login request
                             await axios.post(baseURL + 'login', formData, {
                                 headers: {
                                     "Content-Type": "multipart/form-data",
                                 },
                             }).then((rs) => {
-                                ShowSnackbar(rs.data.message)
-                                setLoading(false)
+                                ShowSnackbar(rs.data.message);
+                                setLoading(false);
                                 const params = {
                                     result: null,
                                     phone: selectedCode + mobile,
                                 };
                                 props.navigation.navigate("Verification", params);
                             }).catch((err) => {
-                                ShowSnackbar(err.response.data.message)
-                                setLoading(false)
-                            })
+                                ShowSnackbar(err.response.data.message);
+                                setLoading(false);
+                            });
                         }).catch((err) => {
-                            setLoading(false)
-                            ShowSnackbar("Failed to get location, try again.")
-                        })
+                            setLoading(false);
+                            ShowSnackbar("Failed to get location. Ensure location is enabled.");
+                        });
+                    } else if (!rs.granted) {
+                        setLoading(false);
+                        ShowSnackbar("Location permission denied");
+                        alert("Please enable location permission from settings to continue.");
+                        Linking.openSettings();
                     }
-                    else if(!rs.granted){
-                        setLoading(false)
-                        ShowSnackbar("Location permission denied")
-                        alert("Please enable location permission from settings to continue.")
-                        Linking.openSettings()
-                    }
-                })
+                });
             } else if (!mobile) {
                 ShowSnackbar("Please enter a phone number.");
                 setLoading(false);
@@ -115,7 +117,7 @@ const Login = (props) => {
                 setLoading(false);
             }
         } catch (error) {
-            ShowSnackbar('Error Authenticating user, Try again.');
+            ShowSnackbar('Error authenticating user, try again.');
             setLoading(false);
         }
     };
@@ -149,12 +151,12 @@ const Login = (props) => {
                             Access your account securely and manage your transactions with ease.
                         </Text>
                         <View style={{ marginTop: 30 }}>
-                            <MobileInput value={mobile} 
-                            onChangeText={(selectedCode, text) => {
-                                setSelectedCode(selectedCode)
-                                setMobile(text)
+                            <MobileInput value={mobile}
+                                onChangeText={(selectedCode, text) => {
+                                    setSelectedCode(selectedCode)
+                                    setMobile(text)
 
-                            }} 
+                                }}
                             />
                         </View>
                     </View>

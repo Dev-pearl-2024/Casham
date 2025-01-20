@@ -25,6 +25,9 @@
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.RECORD_AUDIO"
       ]
     },
@@ -67,7 +70,7 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/a1074a83-9bc3-4732-9348-0744d73a734d"
+      "url": "https://u.expo.dev/aacc157e-3de9-4383-8994-b554baf4e38f"
     }
   }
 }
