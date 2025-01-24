@@ -55,7 +55,7 @@ const QR_share_freinds = ({ visible, dismiss }) => {
             >
                 <View
                     style={{
-                        width: Dimensions.get("window").width - 100,
+                        width: Dimensions.get("window").width - 20,
                         paddingVertical: 30,
                         backgroundColor: "white",
                         alignItems: "center",

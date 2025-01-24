@@ -5,7 +5,7 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  Text,
+  Text
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useColors } from "../../../Elements/Themes/Colors";
@@ -48,8 +48,8 @@ const Pin = (props) => {
             .post(baseURL + "Pin", formData, {
               headers: {
                 "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${token}`,
-              },
+                Authorization: `Bearer ${token}`
+              }
             })
             .then(async (rs) => {
               if (rs.data.status == 200) {
@@ -59,9 +59,9 @@ const Pin = (props) => {
                   index: 0,
                   routes: [
                     {
-                      name: "Dashboard",
-                    },
-                  ],
+                      name: "Dashboard"
+                    }
+                  ]
                 });
               } else {
                 alert("Error creating pin, Try again!");
@@ -104,13 +104,13 @@ const Pin = (props) => {
                 currency: currency,
                 longitude: longitude,
                 latitude: latitude,
-                paymentPin: pin.toString(),
+                paymentPin: pin.toString()
               },
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization: `Bearer ${token}`,
-                },
+                  Authorization: `Bearer ${token}`
+                }
               }
             )
             .then((rs) => {
@@ -119,7 +119,7 @@ const Pin = (props) => {
               props.navigation.navigate("CompleteTransaction", {
                 success: true,
                 amount: props.route.params.amount,
-                pinWrong: false,
+                pinWrong: false
               });
             })
             .catch((err) => {
@@ -129,7 +129,7 @@ const Pin = (props) => {
               props.navigation.navigate("CompleteTransaction", {
                 success: false,
                 amount: props.route.params.amount,
-                pinWrong: true,
+                pinWrong: true
               });
             });
 
@@ -173,7 +173,7 @@ const Pin = (props) => {
               style={[
                 styles.dot,
                 pin.length > index && styles.filledDot,
-                { borderColor: colors.primary },
+                { borderColor: colors.primary }
               ]}
             />
           ))}
@@ -183,7 +183,7 @@ const Pin = (props) => {
           ["1", "2", "3"],
           ["4", "5", "6"],
           ["7", "8", "9"],
-          ["backspace", "0", "done"],
+          ["backspace", "0", "done"]
         ].map((row, rowIndex) => (
           <View key={rowIndex} style={styles.row}>
             {row.map((key) => (
@@ -191,7 +191,7 @@ const Pin = (props) => {
                 key={key}
                 style={[
                   styles.key,
-                  key === "done" && { backgroundColor: colors.primary },
+                  key === "done" && { backgroundColor: colors.primary }
                 ]}
                 onPress={() => handleKeyPress(key)}
               >
@@ -214,50 +214,53 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#fff"
   },
   logo: {
     width: 100,
     height: 33.54,
     marginBottom: 20,
-    marginTop: 50,
+    marginTop: 50
   },
   title: {
     fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 10
   },
   subtitle: {
     fontSize: 16,
-    marginBottom: 30,
+    marginBottom: 30
   },
   pinContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "60%",
     alignSelf: "center",
-    marginBottom: 40,
+    marginBottom: 40
   },
   dot: {
     width: 16,
     height: 16,
     borderRadius: 8,
     borderWidth: 1,
-    backgroundColor: "transparent",
+    backgroundColor: "transparent"
   },
   filledDot: {
-    backgroundColor: "#000",
+    backgroundColor: "#000"
   },
   keyboard: {
     width: "100%",
     marginTop: 20,
     paddingBottom: 30,
     alignSelf: "center",
+    position: "absolute",
+    bottom: 0,
+    left: 0
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginBottom: 20
   },
   key: {
     width: Dimensions.get("window").width / 3.5,
@@ -266,12 +269,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 0.6,
     borderColor: "lightgray",
-    borderRadius: 5,
+    borderRadius: 5
   },
   keyText: {
     fontSize: 20,
-    fontWeight: "bold",
-  },
+    fontWeight: "bold"
+  }
 });
 
 export default Pin;
