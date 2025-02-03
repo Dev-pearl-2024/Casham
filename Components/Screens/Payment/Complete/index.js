@@ -76,7 +76,7 @@ const CompleteTransaction = (props) => {
                             <Text style={{
                                 paddingHorizontal: 20, marginVertical: 20, color: 'gray',
                                 textAlign: 'center'
-                            }}>Payment successfully done . You will receive a confirmation email shortly.</Text>
+                            }}>Payment Failed. Please try again.</Text>
                             <Text style={{ color: 'gray' }}>Transaction ID:
                                 <Text style={{ fontWeight: 'bold', color:'red' }}> Failure</Text>
                             </Text>

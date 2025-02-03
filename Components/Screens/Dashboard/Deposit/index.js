@@ -58,7 +58,7 @@ export default Deposit = ({ navigation, route }) => {
                 params: { token: device_token },
                 headers: { Authorization: `Bearer ${api_token}` },
             });
-            if (rs.data.status !== 202) {
+            if (rs.data.status !== 200) {
                 navigation.reset({
                     index: 0,
                     routes: [{ name: "Login" }],

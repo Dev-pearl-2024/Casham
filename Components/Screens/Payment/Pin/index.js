@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useColors } from "../../../Elements/Themes/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { baseURL } from "../../../API/baseURL";
+import { baseURL, baseURLTransferAmount } from "../../../API/baseURL";
 import { getLastKnownPositionAsync } from "expo-location";
 import { Loader } from "../../../Elements/UIElements/Loader";
 
@@ -91,11 +91,11 @@ const Pin = (props) => {
             latitude = rs.coords.latitude;
           });
           const token = await AsyncStorage.getItem("api_token");
-          console.log(pin);
+          console.log(token);
 
           await axios
             .post(
-              baseURL + "payments",
+              baseURLTransferAmount + "payments",
               {
                 AccountNo: AccountNo,
                 AccountBranch: AccountBranch,

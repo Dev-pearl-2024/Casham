@@ -16,7 +16,7 @@ const CheckSession = ({ props }) => {
                 'Authorization': `Bearer ${api_token}`
             }
         }).then((rs) => {
-            if (!rs.data.status == 202) {
+            if (!rs.data.status == 200) {
                 props.navigation.reset(
                     {
                         index: 0,

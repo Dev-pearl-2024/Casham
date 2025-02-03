@@ -3,24 +3,24 @@ import * as React from "react";
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
-  DarkTheme as NavigationDarkTheme,
+  DarkTheme as NavigationDarkTheme
 } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   Provider as PaperProvider,
   MD3LightTheme,
   MD3DarkTheme,
-  Text,
+  Text
 } from "react-native-paper";
 import Loading from "./Components/Screens/Loading";
 import {
   createStackNavigator,
-  TransitionPresets,
+  TransitionPresets
 } from "@react-navigation/stack";
 import {
   DarkColors,
   LightColors,
-  useColors,
+  useColors
 } from "./Components/Elements/Themes/Colors";
 import Onboarding from "./Components/Screens/Onboarding";
 import Login from "./Components/Screens/Auth/Login";
@@ -50,8 +50,8 @@ function App() {
       ...MD3LightTheme.colors,
       primary: DarkColors.primary,
       background: DarkColors.background,
-      secondary: DarkColors.secondary,
-    },
+      secondary: DarkColors.secondary
+    }
   };
 
   const customPaperDarkTheme = {
@@ -60,8 +60,8 @@ function App() {
       ...MD3DarkTheme.colors,
       primary: DarkColors.primary,
       background: DarkColors.background,
-      secondary: DarkColors.secondary,
-    },
+      secondary: DarkColors.secondary
+    }
   };
 
   const customNavigationTheme = {
@@ -70,8 +70,8 @@ function App() {
       ...NavigationDefaultTheme.colors,
       primary: LightColors.primary,
       background: LightColors.background,
-      secondary: LightColors.secondary,
-    },
+      secondary: LightColors.secondary
+    }
   };
 
   const customNavigationDarkTheme = {
@@ -80,8 +80,8 @@ function App() {
       ...NavigationDarkTheme.colors,
       primary: DarkColors.primary,
       background: DarkColors.background,
-      secondary: DarkColors.secondary,
-    },
+      secondary: DarkColors.secondary
+    }
   };
 
   const isDarkTheme = colors === DarkColors;
@@ -117,7 +117,7 @@ function App() {
                 animation: "slide_from_bottom",
                 gestureEnabled: true,
                 presentation: "modal",
-                ...TransitionPresets.ModalPresentationIOS,
+                ...TransitionPresets.ModalPresentationIOS
               }}
             />
             <Stack.Screen
@@ -128,7 +128,7 @@ function App() {
                 animation: "slide_from_bottom",
                 gestureEnabled: true,
                 presentation: "modal",
-                ...TransitionPresets.ModalPresentationIOS,
+                ...TransitionPresets.ModalPresentationIOS
               }}
             />
             <Stack.Screen
@@ -139,7 +139,7 @@ function App() {
                 animation: "slide_from_bottom",
                 gestureEnabled: true,
                 presentation: "modal",
-                ...TransitionPresets.ModalPresentationIOS,
+                ...TransitionPresets.ModalPresentationIOS
               }}
             />
             <Stack.Screen
@@ -150,7 +150,7 @@ function App() {
                 animation: "slide_from_bottom",
                 gestureEnabled: true,
                 presentation: "modal",
-                ...TransitionPresets.ModalPresentationIOS,
+                ...TransitionPresets.ModalPresentationIOS
               }}
             />
             <Stack.Screen name="Dashboard" component={Dashboard} />
@@ -166,7 +166,7 @@ function App() {
                 animation: "slide_from_bottom",
                 gestureEnabled: true,
                 presentation: "modal",
-                ...TransitionPresets.ModalPresentationIOS,
+                ...TransitionPresets.ModalPresentationIOS
               }}
             />
             <Stack.Screen
@@ -182,7 +182,7 @@ function App() {
                 animation: "slide_from_bottom",
                 gestureEnabled: true,
                 presentation: "modal",
-                ...TransitionPresets.ModalPresentationIOS,
+                ...TransitionPresets.ModalPresentationIOS
               }}
             />
           </Stack.Navigator>

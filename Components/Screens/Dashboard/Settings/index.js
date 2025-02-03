@@ -8,7 +8,7 @@ import {
   Linking,
   Touchable,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { useColors } from "../../../Elements/Themes/Colors";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ import {
   launchCameraAsync,
   launchImageLibraryAsync,
   MediaTypeOptions,
-  requestMediaLibraryPermissionsAsync,
+  requestMediaLibraryPermissionsAsync
 } from "expo-image-picker";
 import QR from "../../../Elements/UIElements/QR";
 import { ExpandableSection } from "react-native-ui-lib";
@@ -62,11 +62,11 @@ export default Settings = ({ props }) => {
     await axios
       .get(`${baseURL}userdetails`, {
         params: {
-          token: device_token,
+          token: device_token
         },
         headers: {
-          Authorization: `Bearer ${api_token}`,
-        },
+          Authorization: `Bearer ${api_token}`
+        }
       })
       .then((rs) => {
         if (rs.data.status == 200) {
@@ -111,11 +111,11 @@ export default Settings = ({ props }) => {
 
       const response = await axios.get(`${baseURL}signout`, {
         params: {
-          token: device_token, // Sending the device_token
+          token: device_token // Sending the device_token
         },
         headers: {
-          Authorization: `Bearer ${api_token}`, // Send API token as Bearer token
-        },
+          Authorization: `Bearer ${api_token}` // Send API token as Bearer token
+        }
       });
 
       console.log("Response Data:", response.data);
@@ -149,7 +149,7 @@ export default Settings = ({ props }) => {
       if (rs.granted) {
         launchCameraAsync({
           allowsEditing: true,
-          quality: 0.7,
+          quality: 0.7
         })
           .then(async (rs) => {
             if (!rs.canceled) {
@@ -159,7 +159,7 @@ export default Settings = ({ props }) => {
               formData.append("photo", {
                 uri: rs.assets[0].uri,
                 type: "image/jpeg", // Replace with the actual file type, e.g., 'image/png'
-                name: "profile_photo.jpg", // The filename for the uploaded photo
+                name: "profile_photo.jpg" // The filename for the uploaded photo
               });
 
               try {
@@ -170,8 +170,8 @@ export default Settings = ({ props }) => {
                   {
                     headers: {
                       "Content-Type": "multipart/form-data",
-                      Authorization: `Bearer ${api_token}`, // Add the API token to the headers
-                    },
+                      Authorization: `Bearer ${api_token}` // Add the API token to the headers
+                    }
                   }
                 );
 
@@ -220,7 +220,7 @@ export default Settings = ({ props }) => {
           allowsEditing: true,
           allowsMultipleSelection: false,
           quality: 0.7,
-          mediaTypes: MediaTypeOptions.Images,
+          mediaTypes: MediaTypeOptions.Images
         })
           .then(async (rs) => {
             if (!rs.canceled) {
@@ -230,7 +230,7 @@ export default Settings = ({ props }) => {
               formData.append("photo", {
                 uri: rs.assets[0].uri,
                 type: "image/jpeg", // Replace with the actual file type, e.g., 'image/png'
-                name: "profile_photo.jpg", // The filename for the uploaded photo
+                name: "profile_photo.jpg" // The filename for the uploaded photo
               });
 
               try {
@@ -241,8 +241,8 @@ export default Settings = ({ props }) => {
                   {
                     headers: {
                       "Content-Type": "multipart/form-data",
-                      Authorization: `Bearer ${api_token}`, // Add the API token to the headers
-                    },
+                      Authorization: `Bearer ${api_token}` // Add the API token to the headers
+                    }
                   }
                 );
 
@@ -292,11 +292,11 @@ export default Settings = ({ props }) => {
       .delete(baseURL + "deleteuser", {
         headers: {
           Authorization: `Bearer ${api_token}`,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         params: {
-          devicetoken: device_token,
-        },
+          devicetoken: device_token
+        }
       })
       .then(async (rs) => {
         setLoading(false);
@@ -308,7 +308,7 @@ export default Settings = ({ props }) => {
         // Navigate to Onboarding screen
         props.navigation.reset({
           index: 0,
-          routes: [{ name: "Onboarding" }],
+          routes: [{ name: "Onboarding" }]
         });
       })
       .catch((err) => {
@@ -322,19 +322,19 @@ export default Settings = ({ props }) => {
 
   useEffect(() => {
     Appearance.addChangeListener(() => [
-      setThemeState(Appearance.getColorScheme()),
+      setThemeState(Appearance.getColorScheme())
     ]);
   }, []);
 
-  const number = 9769874120
+  const number = "+23276603356";
 
   return (
     <SafeAreaView
       style={[
         stylesheet.container,
         {
-          marginBottom: 100,
-        },
+          marginBottom: 100
+        }
       ]}
     >
       <CheckSession props={props} />
@@ -345,13 +345,13 @@ export default Settings = ({ props }) => {
           height: Dimensions.get("window").height / 3,
           position: "absolute",
           top: 0,
-          alignItems: "center",
+          alignItems: "center"
         }}
       >
         <Card
           style={{
             borderRadius: 60,
-            marginTop: 50,
+            marginTop: 50
           }}
         >
           <Menu
@@ -365,12 +365,12 @@ export default Settings = ({ props }) => {
                   source={{
                     uri: data?.photo
                       ? data.photo
-                      : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg",
+                      : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
                   }}
                   style={{
                     width: 120,
                     height: 120,
-                    borderRadius: 60,
+                    borderRadius: 60
                   }}
                 />
               </TouchableScale>
@@ -407,7 +407,7 @@ export default Settings = ({ props }) => {
                 width: 55,
                 height: 55,
                 alignItems: "center",
-                justifyContent: "center",
+                justifyContent: "center"
               }}
             >
               <MaterialIcons name="qr-code-2" size={35} />
@@ -419,7 +419,7 @@ export default Settings = ({ props }) => {
             fontSize: 22,
             fontWeight: "bold",
             color: "white",
-            marginTop: 15,
+            marginTop: 15
           }}
         >
           {data ? data.name : "Username"}
@@ -436,7 +436,7 @@ export default Settings = ({ props }) => {
           borderTopStartRadius: 30,
           width: "100%",
           alignItems: "center",
-          marginTop: 260,
+          marginTop: 260
         }}
       >
         {/* <ExpandableSection
@@ -559,7 +559,7 @@ export default Settings = ({ props }) => {
             justifyContent: "space-between",
             paddingHorizontal: 25,
             borderRadius: 10,
-            marginTop: 30,
+            marginTop: 30
           }}
           onPress={() => {
             props.navigation.navigate("Pin", { mode: "update" });
@@ -570,7 +570,7 @@ export default Settings = ({ props }) => {
           <Text
             style={{
               flex: 0.8,
-              fontSize: 15,
+              fontSize: 15
             }}
           >
             Change Pin
@@ -625,7 +625,7 @@ export default Settings = ({ props }) => {
             justifyContent: "space-between",
             paddingHorizontal: 25,
             borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
+            borderTopRightRadius: 10
           }}
           onPress={() => {
             props.navigation.navigate("PrivacyPolicy");
@@ -636,7 +636,7 @@ export default Settings = ({ props }) => {
           <Text
             style={{
               flex: 0.8,
-              fontSize: 15,
+              fontSize: 15
             }}
           >
             Terms & Conditions
@@ -647,7 +647,7 @@ export default Settings = ({ props }) => {
           style={{
             width: Dimensions.get("window").width - 50,
             height: 0.5,
-            backgroundColor: "lightgray",
+            backgroundColor: "lightgray"
           }}
         />
         <TouchableOpacity
@@ -660,7 +660,7 @@ export default Settings = ({ props }) => {
             justifyContent: "space-between",
             paddingHorizontal: 25,
             borderBottomLeftRadius: 10,
-            borderBottomRightRadius: 10,
+            borderBottomRightRadius: 10
           }}
           onPress={() => {
             // props.navigation.navigate("Contact");
@@ -675,7 +675,7 @@ export default Settings = ({ props }) => {
           <Text
             style={{
               flex: 0.8,
-              fontSize: 15,
+              fontSize: 15
             }}
           >
             Contact Us
@@ -692,7 +692,7 @@ export default Settings = ({ props }) => {
             justifyContent: "space-between",
             paddingHorizontal: 25,
             borderRadius: 10,
-            marginTop: 30,
+            marginTop: 30
           }}
           onPress={() => {
             setInviteFriendsvisible(true);
@@ -703,7 +703,7 @@ export default Settings = ({ props }) => {
           <Text
             style={{
               flex: 0.8,
-              fontSize: 15,
+              fontSize: 15
             }}
           >
             Invite Friends
@@ -720,7 +720,7 @@ export default Settings = ({ props }) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            paddingHorizontal: 25,
+            paddingHorizontal: 25
           }}
           onPress={() => {
             setDialogVisible(true);
@@ -734,7 +734,7 @@ export default Settings = ({ props }) => {
             style={{
               flex: 0.92,
               fontSize: 15,
-              color: Colors.red,
+              color: Colors.red
             }}
           >
             De-Register from Casham
@@ -751,7 +751,7 @@ export default Settings = ({ props }) => {
             alignItems: "center",
             justifyContent: "space-between",
             paddingHorizontal: 25,
-            marginBottom: 100,
+            marginBottom: 100
           }}
           onPress={() => {
             setDialogVisible(true);
@@ -763,7 +763,7 @@ export default Settings = ({ props }) => {
             style={{
               flex: 0.92,
               fontSize: 15,
-              color: Colors.red,
+              color: Colors.red
             }}
           >
             Logout
