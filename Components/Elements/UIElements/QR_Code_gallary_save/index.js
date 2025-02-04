@@ -5,40 +5,40 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Modal, Portal, Text } from "react-native-paper";
 import QRCode from "react-native-qrcode-svg";
 import * as FileSystem from "expo-file-system"; // For saving the QR code image to a file
-import { captureScreen } from "react-native-view-shot";
+// import { captureScreen } from "react-native-view-shot";
 
 const QR_share_freinds = ({ visible, dismiss }) => {
     const qrCodeRef = useRef(null);
 
-    const handleImageShare = async () => {
-        try {
-            // Capture the screenshot of the whole screen or specific view
-            const uri = await captureScreen({
-                format: 'png',   // Format of the screenshot
-                quality: 0.8,    // Quality of the screenshot
-            });
+    // const handleImageShare = async () => {
+    //     try {
+    //         // Capture the screenshot of the whole screen or specific view
+    //         const uri = await captureScreen({
+    //             format: 'png',   // Format of the screenshot
+    //             quality: 0.8,    // Quality of the screenshot
+    //         });
 
-            console.log('Screenshot URI:', uri);
+    //         console.log('Screenshot URI:', uri);
 
-            // Share the image using react-native-share
-            const options = {
-                title: 'Share Image',
-                message: 'Here is a screenshot for you!',
-                url: uri,  // URI of the captured image
-                type: 'image/png', // MIME type
-            };
+    //         // Share the image using react-native-share
+    //         const options = {
+    //             title: 'Share Image',
+    //             message: 'Here is a screenshot for you!',
+    //             url: uri,  // URI of the captured image
+    //             type: 'image/png', // MIME type
+    //         };
 
-            // await Share.open(options);  // Open share dialog
+    //         // await Share.open(options);  // Open share dialog
 
-            // Save the image to the gallery (optional)
-            // await CameraRoll.save(uri, { type: 'photo' });
+    //         // Save the image to the gallery (optional)
+    //         // await CameraRoll.save(uri, { type: 'photo' });
 
-            console.log('Image saved to gallery!');
-        } catch (error) {
-            console.error('Error sharing or saving image:', error);
-            Alert.alert('Error', 'There was an error while sharing or saving the screenshot.');
-        }
-    };
+    //         console.log('Image saved to gallery!');
+    //     } catch (error) {
+    //         console.error('Error sharing or saving image:', error);
+    //         Alert.alert('Error', 'There was an error while sharing or saving the screenshot.');
+    //     }
+    // };
 
     return (
         <Portal>
@@ -114,7 +114,7 @@ const QR_share_freinds = ({ visible, dismiss }) => {
                             paddingVertical: 10,
                             borderRadius: 5,
                         }}
-                        onPress={handleImageShare}
+                        // onPress={handleImageShare}
                     >
                         <Text
                             style={{
