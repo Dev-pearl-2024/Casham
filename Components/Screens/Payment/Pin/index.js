@@ -95,7 +95,7 @@ const Pin = (props) => {
 
           await axios
             .post(
-              baseURLTransferAmount + "payments",
+              baseURL + "payments",
               {
                 AccountNo: AccountNo,
                 AccountBranch: AccountBranch,
