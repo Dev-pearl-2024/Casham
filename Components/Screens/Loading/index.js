@@ -40,7 +40,7 @@ const Loading = (props) => {
                     }
                 }
             ).then(async (rs) => {
-                console.log(rs.data);
+                console.log("loading:->",rs.data);
 
                 const pin = await AsyncStorage.getItem("pin")
                 if (rs.data.userDetails) {

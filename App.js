@@ -41,6 +41,8 @@ import ContactPopup from "./Components/Screens/Dashboard/Settings/Contact";
 
 const Stack = createStackNavigator();
 
+// "distribution": "internal",
+
 function App() {
   const colors = useColors();
 

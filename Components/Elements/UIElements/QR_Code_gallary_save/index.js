@@ -40,6 +40,23 @@ const QR_share_freinds = ({ visible, dismiss }) => {
   //     }
   // };
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          "api.cashamsalone.com/download"
+      });
+
+      if (result.action === Share.sharedAction) {
+        console.log("Shared successfully");
+      } else if (result.action === Share.dismissedAction) {
+        console.log("Share dismissed");
+      }
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
+  };
+
   return (
     <Portal>
       <Modal
@@ -115,6 +132,7 @@ const QR_share_freinds = ({ visible, dismiss }) => {
               borderRadius: 5
             }}
             onPress={() => {
+              onShare();
               Alert.alert(
                 "Launching Soon!",
                 "Launching Soon on Google Play Store"

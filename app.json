@@ -20,6 +20,7 @@
       }
     },
     "android": {
+      "jsEngine": "jsc",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -45,12 +46,6 @@
     },
     "owner": "dev-pearl-2024",
     "plugins": [
-      [
-        "expo-contacts",
-        {
-          "contactsPermission": "Allow Casham to access your contacts."
-        }
-      ],
       [
         "expo-build-properties",
         {

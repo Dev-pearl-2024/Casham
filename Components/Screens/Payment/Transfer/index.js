@@ -11,9 +11,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MobileInput from "../../../Elements/UIElements/MobileInput";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-// import * as Contacts from "expo-contacts";
+// const Contacts = require("expo-contacts");
 
 const Transfer = (props) => {
+  // console.log(globalThis.expo?.modules?.Contacts);
   const [number, setNumber] = useState("");
   const [mobile, setMobile] = useState("");
 
@@ -69,25 +70,22 @@ const Transfer = (props) => {
     });
   };
 
-  //   const fetchContacts = async () => {
-  //     // Renamed the function to avoid naming conflict
-  //     const { status } = await Contacts.requestPermissionsAsync(); // Request permissions correctly
-
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Contacts.requestPermissionsAsync();
   //     if (status === "granted") {
   //       const { data } = await Contacts.getContactsAsync({
-  //         fields: [Contacts.Fields.PhoneNumbers]
+  //         fields: [Contacts.Fields.Emails]
   //       });
+  //       console.log(data);
 
-  //       console.log("fdf",data); // Log the contacts data
-  //     } else {
-  //       console.log("Contacts permission denied");
+  //       if (data.length > 0) {
+  //         const contact = data[0];
+  //         console.log(contact);
+  //       }
   //     }
-  //   };
-
-  //   useEffect(() => {
-  //     fetchContacts(); // Call the renamed function
-  //   }, []);
-
+  //   })();
+  // }, []);
   return (
     <SafeAreaView
       style={[
@@ -118,10 +116,11 @@ const Transfer = (props) => {
             fontSize: Dimensions.get("window").width / 20,
             left: 20,
             fontWeight: "bold",
-            color: colors.primary
+            color: colors.primary,
+            fontFamily: "Inter-Black"
           }}
         >
-          Transfer Amount
+          Transfer Number
         </Text>
         <Text
           style={{
