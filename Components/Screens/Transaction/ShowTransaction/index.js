@@ -9,13 +9,31 @@ import { format } from "date-fns";
 const { width } = Dimensions.get("window");
 
 const ShowTransaction = (props) => {
-    const [data, setData] = useState(props.route.params.data);
-    const [type, setType] = useState(props.route.params.type)
+    const [data, setData] = useState(props.route.params?.data || {});
+    const [type, setType] = useState(props.route.params?.type || "sent");
     const Colors = useColors();
 
+    console.log(type);
+    
+
     useEffect(() => {
-        setData(props.route.params.data);
-    }, []);
+        if (props.route.params?.data) {
+            setData(props.route.params.data);
+        }
+        if (props.route.params?.type) {
+            setType(props.route.params.type);
+        }
+    }, [props.route.params]);
+
+    // Handle invalid date values safely
+    let formattedDate = "N/A";
+    if (data?.date) {
+        try {
+            formattedDate = format(new Date(data.date), "dd MMM yyyy");
+        } catch (error) {
+            console.warn("Invalid date:", data.date);
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -36,19 +54,19 @@ const ShowTransaction = (props) => {
 
                 {/* Payment Info */}
                 <Text style={styles.amountText}>
-                    {data.recipientCurrency} {parseInt(data.amount).toLocaleString()}
+                    {data?.recipientCurrency || "USD"} {parseInt(data?.amount || 0).toLocaleString()}
                 </Text>
-                <Text style={styles.successText}>{type == 'sent' ? 'Payment Successful' : 'Payment Received'}</Text>
-                <Text style={styles.dateText}>
-                    {format(new Date(data.date), "dd MMM yyyy")}
+                <Text style={styles.successText}>
+                    {type === "sent" ? "Payment Successful" : "Payment Received"}
                 </Text>
+                <Text style={styles.dateText}>{formattedDate}</Text>
             </View>
 
             {/* Details Section */}
             <View style={styles.detailsContainer}>
-                <Text style={styles.title}>{type == 'sent' ? 'To' : 'From'}</Text>
-                <Text style={styles.recipientName}>{data.recipientName || "Unknown Recipient"}</Text>
-                <Text style={styles.recipientDetails}>{data.recipientMobileNumber || "N/A"}</Text>
+                <Text style={styles.title}>{type === "sent" ? "To" : "From"}</Text>
+                <Text style={styles.recipientName}>{data?.recipientName || "Unknown Recipient"}</Text>
+                <Text style={styles.recipientDetails}>{data?.recipientMobileNumber || "N/A"}</Text>
                 <View style={styles.divider} />
 
                 <Text style={styles.notesTitle}>Notes</Text>
@@ -56,10 +74,10 @@ const ShowTransaction = (props) => {
                 <View style={styles.divider} />
 
                 <Text style={styles.infoTitle}>Transaction ID</Text>
-                <Text style={styles.infoText}>{data.requestId}</Text>
+                <Text style={styles.infoText}>{data?.requestId || "N/A"}</Text>
 
                 <Text style={styles.infoTitle}>Transfer Reference</Text>
-                <Text style={styles.infoText}>{data.transferRef}</Text>
+                <Text style={styles.infoText}>{data?.transferRef || "N/A"}</Text>
             </View>
         </SafeAreaView>
     );

@@ -38,6 +38,7 @@ import CompleteTransaction from "./Components/Screens/Payment/Complete";
 import Transfer from "./Components/Screens/Payment/Transfer";
 import ShowTransaction from "./Components/Screens/Transaction/ShowTransaction";
 import ContactPopup from "./Components/Screens/Dashboard/Settings/Contact";
+import History from "./Components/Screens/History";
 
 const Stack = createStackNavigator();
 
@@ -159,6 +160,7 @@ function App() {
             <Stack.Screen name="QRScanner" component={QRScanner} />
             <Stack.Screen name="Transaction" component={Transaction} />
             <Stack.Screen name="BankScreen" component={BankScreen} />
+            <Stack.Screen name="History" component={History} />
             <Stack.Screen name="Pin" component={Pin} />
             <Stack.Screen
               name="Contact"

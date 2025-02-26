@@ -7,12 +7,12 @@ module.exports = (() => {
 
   config.transformer = {
     ...transformer,
-    babelTransformerPath: require.resolve("react-native-svg-transformer/expo"),
+    babelTransformerPath: require.resolve("react-native-svg-transformer/expo")
   };
   config.resolver = {
     ...resolver,
     assetExts: resolver.assetExts.filter((ext) => ext !== "svg"),
-    sourceExts: [...resolver.sourceExts, "svg", "cjs"], // Include 'cjs' here
+    sourceExts: [...resolver.sourceExts, "svg", "cjs", "jsx", "js", "ts", "tsx"] // Include 'cjs' here
   };
 
   return config;

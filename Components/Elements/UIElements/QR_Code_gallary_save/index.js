@@ -43,8 +43,9 @@ const QR_share_freinds = ({ visible, dismiss }) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
+        title: "Get Casham – Your Go-To Payment App! 🚀",
         message:
-          "api.cashamsalone.com/download"
+          "https://play.google.com/store/apps/details?id=com.casham&hl=en_US"
       });
 
       if (result.action === Share.sharedAction) {
@@ -116,7 +117,7 @@ const QR_share_freinds = ({ visible, dismiss }) => {
           </View>
           <QRCode
             value={
-              "https://github.com/umar-pearllocal/Bad_example/releases/download/v1.0.0/application-8fdc1e7f-4f24-4e5c-aa21-20f3ccea342a.apk"
+              "https://play.google.com/store/apps/details?id=com.casham&hl=en_US"
             }
             size={Dimensions.get("window").width / 2.5}
           />

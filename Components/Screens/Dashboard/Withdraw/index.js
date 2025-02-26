@@ -29,7 +29,10 @@ export default Withdraw = ({ navigation }) => {
       })
       .then((rs) => {
         if (rs.status == 200) {
-          setTransactionData(rs.data);
+          let sortedData = response.data.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+          setTransactionData(sortedData);
           // setData(rs.data)
         } else if (rs.status === 401) {
           console.log("Error");
@@ -143,12 +146,14 @@ export default Withdraw = ({ navigation }) => {
                     <Text style={{ fontSize: 16, fontWeight: "bold" }}>
                       Sent
                     </Text>
-                    <Text>{item.recipientName}</Text>
+                    <Text style={{ fontSize: 12 }}>{item.recipientName}</Text>
                   </View>
-                  <View>
+                  <View
+                    style={{ alignItems: "center", justifyContent: "center" }}
+                  >
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: "bold",
                         color: "red"
                       }}

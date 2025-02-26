@@ -104,7 +104,10 @@ export default Home = ({ props }) => {
       .then((rs) => {
         if (rs.status == 200) {
           console.log("transitiondata->", rs.data);
-          setTransactionData(rs.data);
+          let sortedData = rs.data.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+          setTransactionData(sortedData);
           // setData(rs.data)
         } else if (rs.status === 401) {
           console.log("Error");
@@ -179,17 +182,20 @@ export default Home = ({ props }) => {
                 <Text style={{ fontSize: 16, fontWeight: "bold" }}>
                   {data?.name !== item.originName ? "Received" : "Sent"}
                 </Text>
-                <Text>
+                <Text style={{ fontSize: 12 }}>
                   {data?.name === item.originName
                     ? item.recipientName
                     : item.originName}
                 </Text>
               </View>
-              <View>
+              <View style={{
+                alignItems:"center",
+                justifyContent:"center"
+              }}>
                 {data?.name !== item.originName ? (
                   <Text
                     style={{
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: "bold",
                       color: "green"
                     }}
@@ -199,7 +205,7 @@ export default Home = ({ props }) => {
                 ) : (
                   <Text
                     style={{
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: "bold",
                       color: "red"
                     }}
@@ -391,6 +397,9 @@ export default Home = ({ props }) => {
                   justifyContent: "center"
                 }}
                 activeOpacity={0.6}
+                onPress={() => {
+                  props.navigation.navigate("History");
+                }}
               >
                 <View
                   style={{
@@ -484,7 +493,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   scrollViewContent: {
-    marginVertical: 20
+    marginVertical: 0
   },
   card: {
     width: Dimensions.get("window").width - 40, // Adjust width for each card

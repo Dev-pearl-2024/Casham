@@ -12,127 +12,144 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Updates from "expo-updates";
 
 const Loading = (props) => {
+  const Colors = useColors();
 
-    const Colors = useColors()
+  const [update, setUpdate] = useState("Loading Casham...");
 
-    const [update, setUpdate] = useState("Loading Casham...")
+  useEffect(() => {
+    setTimeout(() => {
+      CheckUserAvailability();
+    }, 1200);
+  }, []);
 
-    useEffect(() => {
-        setTimeout(() => {
-            CheckUserAvailability()
-        }, 1200);
-    }, [])
+  const CheckBankDetails = async () => {
+    const api_token = await AsyncStorage.getItem("api_token");
+    const device_token = await AsyncStorage.getItem("device_token");
+    console.log(api_token);
 
-    const CheckBankDetails = async () => {
-        const api_token = await AsyncStorage.getItem("api_token")
-        const device_token = await AsyncStorage.getItem("device_token")
-        console.log(api_token);
+    if (api_token) {
+      axios
+        .get(
+          baseURL + "userdetails",
 
-        if (api_token) {
-            axios.get(baseURL + "userdetails",
-
-                {
-                    params: {
-                        token: device_token,
-                    },
-                    headers: {
-                        "Authorization": `Bearer ${api_token}`
-                    }
-                }
-            ).then(async (rs) => {
-                console.log("loading:->",rs.data);
-
-                const pin = await AsyncStorage.getItem("pin")
-                if (rs.data.userDetails) {
-                    if (pin) {
-                        props.navigation.replace("Dashboard")
-                    } else {
-                        props.navigation.replace("Pin", { mode: 'create' })
-                    }
-                } else {
-                    props.navigation.replace("BankScreen")
-                }
-
-            }).catch((err) => {
-                console.log(err);
-                props.navigation.replace("Login")
-            })
-        }
-    }
-
-    const CheckForUpdates = async () => {
-        try {
-            // Check if an update is available
-            const updateAPI = await Updates.checkForUpdateAsync();
-            if (updateAPI.isAvailable) {
-                setUpdate("Update available. Fetching...");
-                await Updates.fetchUpdateAsync();
-                setUpdate("Update fetched. Reloading app...");
-                await Updates.reloadAsync();
-            } else {
-                setUpdate("App is up to date");
-                setTimeout(() => {
-                    setUpdate("Loading Casham...")
-                }, 500);
+          {
+            params: {
+              token: device_token
+            },
+            headers: {
+              Authorization: `Bearer ${api_token}`
             }
-        } catch (error) {
-            setUpdate("Error checking for updates, Try again!");
-            console.log(error);
-            
-        }
-    };
+          }
+        )
+        .then(async (rs) => {
+          console.log("loading:->", rs.data);
 
-    const CheckUserAvailability = async () => {
-        await CheckForUpdates()
-        const api_token = await AsyncStorage.getItem("api_token")
-        const device_token = await AsyncStorage.getItem("device_token")
-        if (api_token && device_token) {
-            CheckBankDetails()
-        } else {
-            props.navigation.replace("Onboarding")
-        }
+          const pin = await AsyncStorage.getItem("pin");
+          if (rs.data.userDetails) {
+            // if (pin) {
+            props.navigation.replace("Dashboard");
+            // } else {
+            //     props.navigation.replace("Pin", { mode: 'create' })
+            // }
+          } else {
+            props.navigation.replace("BankScreen");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          props.navigation.replace("Login");
+        });
     }
+  };
 
-    return (
-        <SafeAreaView style={[stylesheet.container, {
-            justifyContent: 'space-between'
-        }]}>
-            <CheckSession props={props} />
-            <View />
-            <View style={{
-                width: '100%',
-                alignItems: 'center'
-            }}>
-                <LottieView
-                    source={require('../../Elements/Animations/loadinganim.json')}
-                    style={{
-                        width: '100%', height: Dimensions.get('window').width - 100,
-                    }}
-                    autoPlay loop />
-                <View>
-                    <Text style={{
-                        color: Colors.primary,
-                        fontWeight: 'bold',
-                        fontSize: 36
-                    }}>
-                        Casham
-                    </Text>
-                    <Text style={{
-                        alignSelf: 'flex-end',
-                        color: Colors.primary
-                    }}>Salone</Text>
-                </View>
-            </View>
-            <Text style={{
-                fontSize: 20,
-                marginBottom: 50
-            }}>
-                {
-                    update
-                }
-            </Text>
-        </SafeAreaView>
-    )
-}
+  const CheckForUpdates = async () => {
+    try {
+      // Check if an update is available
+      const updateAPI = await Updates.checkForUpdateAsync();
+      if (updateAPI.isAvailable) {
+        setUpdate("Update available. Fetching...");
+        await Updates.fetchUpdateAsync();
+        setUpdate("Update fetched. Reloading app...");
+        await Updates.reloadAsync();
+      } else {
+        setUpdate("App is up to date");
+        setTimeout(() => {
+          setUpdate("Loading Casham...");
+        }, 500);
+      }
+    } catch (error) {
+      setUpdate("Error checking for updates, Try again!");
+      console.log(error);
+    }
+  };
 
-export default Loading
+  const CheckUserAvailability = async () => {
+    await CheckForUpdates();
+    const api_token = await AsyncStorage.getItem("api_token");
+    const device_token = await AsyncStorage.getItem("device_token");
+    if (api_token && device_token) {
+      CheckBankDetails();
+    } else {
+      props.navigation.replace("Onboarding");
+    }
+  };
+
+  return (
+    <SafeAreaView
+      style={[
+        stylesheet.container,
+        {
+          justifyContent: "space-between"
+        }
+      ]}
+    >
+      <CheckSession props={props} />
+      <View />
+      <View
+        style={{
+          width: "100%",
+          alignItems: "center"
+        }}
+      >
+        <LottieView
+          source={require("../../Elements/Animations/loadinganim.json")}
+          style={{
+            width: "100%",
+            height: Dimensions.get("window").width - 100
+          }}
+          autoPlay
+          loop
+        />
+        <View>
+          <Text
+            style={{
+              color: Colors.primary,
+              fontWeight: "bold",
+              fontSize: 36
+            }}
+          >
+            Casham
+          </Text>
+          <Text
+            style={{
+              alignSelf: "flex-end",
+              color: Colors.primary
+            }}
+          >
+            Salone
+          </Text>
+        </View>
+      </View>
+      <Text
+        style={{
+          fontSize: 20,
+          marginBottom: 50
+        }}
+      >
+        {update}
+      </Text>
+    </SafeAreaView>
+  );
+};
+
+export default Loading;

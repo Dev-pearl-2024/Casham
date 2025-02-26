@@ -345,13 +345,14 @@ export default Settings = ({ props }) => {
           height: Dimensions.get("window").height / 3,
           position: "absolute",
           top: 0,
-          alignItems: "center"
+          alignItems: "center",
+          justifyContent: "center"
         }}
       >
         <Card
           style={{
-            borderRadius: 60,
-            marginTop: 50
+            borderRadius: 60
+            // marginTop: 50
           }}
         >
           <Menu
@@ -419,7 +420,7 @@ export default Settings = ({ props }) => {
             fontSize: 22,
             fontWeight: "bold",
             color: "white",
-            marginTop: 15
+            marginTop: 20
           }}
         >
           {data ? data.name : "Username"}
@@ -436,7 +437,7 @@ export default Settings = ({ props }) => {
           borderTopStartRadius: 30,
           width: "100%",
           alignItems: "center",
-          marginTop: 260
+          marginTop: 240
         }}
       >
         {/* <ExpandableSection

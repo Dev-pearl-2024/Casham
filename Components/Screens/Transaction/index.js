@@ -18,7 +18,7 @@ const Transaction = (props) => {
   const Colors = useColors();
   const [amount, setAmount] = useState("");
 
-  console.log(props.route.params.data.Username);
+  console.log(props.route.params.data);
 
   const [username, setUsername] = useState("");
   const [acc_id, setAcc_Id] = useState("");
@@ -29,13 +29,13 @@ const Transaction = (props) => {
     if (props.route.params) {
       console.log(props.route.params);
 
-      setUsername(props.route.params.data.username);
-      setAcc_Id(props.route.params.data.acc_id);
-      setAccount_Type(props.route.params.data.account_type);
+      setUsername(props?.route?.params?.data?.username);
+      setAcc_Id(props.route.params?.data?.acc_id);
+      setAccount_Type(props.route.params?.data?.account_type);
       setPhone(
-        props.route.params.data.phone_number
-          ? props.route.params.data.phone_number
-          : props.route.params.number
+        props.route.params?.data?.phone_number
+          ? props.route.params?.data?.phone_number
+          : props.route.params?.number
       );
     }
   }, []);
@@ -44,21 +44,21 @@ const Transaction = (props) => {
     props.navigation.navigate("Pin", {
       mode: "verify",
       amount: amount,
-      acc_id: props.route.params.data.acc_id
-        ? props.route.params.data.acc_id
-        : props.route.params.data.AccountNumber,
-      account_type: props.route.params.data.account_type
-        ? props.route.params.data.account_type
-        : props.route.params.data.AccountType,
-      username: props.route.params.data.username
-        ? props.route.params.data.username
-        : props.route.params.data.Username,
-      phone: props.route.params.data.phone_number
-        ? props.route.params.data.phone_number
+      acc_id: props.route.params?.data?.acc_id
+        ? props.route.params?.data?.acc_id
+        : props.route.params?.data?.AccountNumber,
+      account_type: props.route.params?.data?.account_type
+        ? props.route.params?.data?.account_type
+        : props.route.params?.data?.AccountType,
+      username: props.route.params?.data?.username
+        ? props.route.params?.data?.username
+        : props.route.params?.data?.Username,
+      phone: props.route.params?.data?.phone_number
+        ? props.route.params?.data?.phone_number
         : phone,
-      bank_branch: props.route.params.data.bank_branch
-        ? props.route.params.data.bank_branch
-        : props.route.params.data.AccountBranch
+      bank_branch: props.route.params?.data?.bank_branch
+        ? props.route.params?.data?.bank_branch
+        : props.route.params?.data?.AccountBranch
     });
   };
 
@@ -121,10 +121,10 @@ const Transaction = (props) => {
                       amount.length <= 7
                         ? Dimensions.get("window").width / 5
                         : amount.length <= 9
-                        ? Dimensions.get("window").width / 6
-                        : amount.length == 10
-                        ? Dimensions.get("window").width / 7
-                        : 70,
+                          ? Dimensions.get("window").width / 6
+                          : amount.length == 10
+                            ? Dimensions.get("window").width / 7
+                            : 70,
                     textDecorationLine: amount ? "underline" : "none",
                     color: Colors.primary
                   }}

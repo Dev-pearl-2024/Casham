@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     position: "absolute",
     bottom: 0,
-    left: 0
+    // left: 0
   },
   row: {
     flexDirection: "row",
