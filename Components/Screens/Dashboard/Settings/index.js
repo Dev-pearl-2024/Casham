@@ -155,27 +155,27 @@ export default Settings = ({ props }) => {
             if (!rs.canceled) {
               setLoading(true);
               const formData = new FormData();
-              formData.append("uid", device_token); // Device UID is still required
+              formData.append("uid", device_token); 
               formData.append("photo", {
                 uri: rs.assets[0].uri,
-                type: "image/jpeg", // Replace with the actual file type, e.g., 'image/png'
-                name: "profile_photo.jpg" // The filename for the uploaded photo
+                type: "image/jpeg", 
+                name: "profile_photo.jpg" 
               });
 
               try {
-                // Make the POST request using axios
+                
                 const response = await axios.post(
                   `${baseURL}updates`,
                   formData,
                   {
                     headers: {
                       "Content-Type": "multipart/form-data",
-                      Authorization: `Bearer ${api_token}` // Add the API token to the headers
+                      Authorization: `Bearer ${api_token}` 
                     }
                   }
                 );
 
-                // Handle the response
+                
                 if (response.status == 202) {
                   setLoading(false);
                   console.log(
@@ -305,7 +305,7 @@ export default Settings = ({ props }) => {
         await AsyncStorage.setItem("device_token", "");
         await AsyncStorage.setItem("api_token", "");
         await AsyncStorage.setItem("pin", "");
-        // Navigate to Onboarding screen
+        
         props.navigation.reset({
           index: 0,
           routes: [{ name: "Onboarding" }]

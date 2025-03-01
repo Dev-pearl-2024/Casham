@@ -28,7 +28,7 @@ const Header = ({ visible, profile }) => {
         <>
             {visible ?
                 <Animated.View style={{
-                    width: Dimensions.get('window').width, height: profile ? 160 : 100,
+                    width: Dimensions.get('window').width, height: profile ? 160 : 80,
                     backgroundColor: profile ? Colors.primary : 'white',
                     borderBottomWidth: 0.5, borderBottomColor: 'lightgray',
                     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
@@ -56,7 +56,7 @@ const Header = ({ visible, profile }) => {
                         </View>
                         :
                         <>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 24 }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 10 }}>
                                 <Image source={require('../../../Elements/Images/standalonelogo.png')}
                                     style={{ width: 30, height: 30 }} />
                                 <Text style={{
@@ -68,7 +68,7 @@ const Header = ({ visible, profile }) => {
                                 alignItems: 'center',
                                 justifyContent: 'center', borderRadius: 5, borderWidth: 1,
                                 borderColor: 'darkgray',
-                                height: 35, width: 35, marginTop: 24
+                                height: 35, width: 35, marginTop: 10
                             }}>
                                 <Ionicons name="notifications-outline" size={20} />
                             </TouchableOpacity>

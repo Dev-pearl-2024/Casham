@@ -29,7 +29,7 @@ export default Withdraw = ({ navigation }) => {
       })
       .then((rs) => {
         if (rs.status == 200) {
-          let sortedData = response.data.sort(
+          let sortedData = rs.data.sort(
             (a, b) => new Date(b.date) - new Date(a.date)
           );
           setTransactionData(sortedData);
@@ -178,8 +178,8 @@ export default Withdraw = ({ navigation }) => {
           fontSize: 24,
           color: "#000",
           fontWeight: "bold",
-          marginBottom: 20,
-          marginTop: 110,
+          marginBottom: 0,
+          marginTop: 100,
           alignSelf: "flex-start",
           marginStart: 20
         }}

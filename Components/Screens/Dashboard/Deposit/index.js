@@ -23,7 +23,13 @@ export default Deposit = ({ navigation, route }) => {
         headers: { Authorization: `Bearer ${api_token}` }
       });
       if (rs.status === 200) {
-        setTransactionData(rs.data);
+        if (rs.status == 200) {
+          let sortedData = rs.data.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+          setTransactionData(sortedData);
+          // setData(rs.data)
+        }
       } else if (rs.status === 401) {
         console.log("Error");
       }
@@ -148,8 +154,8 @@ export default Deposit = ({ navigation, route }) => {
           fontSize: 24,
           color: "#000",
           fontWeight: "bold",
-          marginBottom: 20,
-          marginTop: 110,
+          marginBottom: 0,
+          marginTop: 100,
           alignSelf: "flex-start",
           marginStart: 20
         }}
