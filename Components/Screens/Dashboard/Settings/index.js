@@ -155,27 +155,25 @@ export default Settings = ({ props }) => {
             if (!rs.canceled) {
               setLoading(true);
               const formData = new FormData();
-              formData.append("uid", device_token); 
+              formData.append("uid", device_token);
               formData.append("photo", {
                 uri: rs.assets[0].uri,
-                type: "image/jpeg", 
-                name: "profile_photo.jpg" 
+                type: "image/jpeg",
+                name: "profile_photo.jpg"
               });
 
               try {
-                
                 const response = await axios.post(
                   `${baseURL}updates`,
                   formData,
                   {
                     headers: {
                       "Content-Type": "multipart/form-data",
-                      Authorization: `Bearer ${api_token}` 
+                      Authorization: `Bearer ${api_token}`
                     }
                   }
                 );
 
-                
                 if (response.status == 202) {
                   setLoading(false);
                   console.log(
@@ -305,7 +303,7 @@ export default Settings = ({ props }) => {
         await AsyncStorage.setItem("device_token", "");
         await AsyncStorage.setItem("api_token", "");
         await AsyncStorage.setItem("pin", "");
-        
+
         props.navigation.reset({
           index: 0,
           routes: [{ name: "Onboarding" }]
@@ -327,6 +325,40 @@ export default Settings = ({ props }) => {
   }, []);
 
   const number = "+23276603356";
+
+  const handleOtpSend = async () => {
+    // props.navigation.navigate("Pin", { mode: "update" });
+    setLoading(true);
+    console.log(data?.phoneNumber?.split("+")[1]);
+
+    try {
+      await axios
+        .get(
+          baseURL +
+            `sendOtp?phoneNumber=%2B${data?.phoneNumber?.split("+")[1]}&context=RESET`
+        )
+        .then((rs) => {
+          ShowSnackbar(rs.data.message);
+          setLoading(false);
+          const params = {
+            result: null,
+            phone: data?.phoneNumber,
+            title: "Pin_Update"
+          };
+          props.navigation.navigate("Verification", params);
+        });
+    } catch (error) {
+      console.log(error);
+
+      ShowSnackbar(err.response.data.message);
+      setLoading(false);
+    }
+  };
+
+  const ShowSnackbar = (title) => {
+    setSnackbarMessage(title);
+    setSnackbarVisible(true);
+  };
 
   return (
     <SafeAreaView
@@ -562,9 +594,7 @@ export default Settings = ({ props }) => {
             borderRadius: 10,
             marginTop: 30
           }}
-          onPress={() => {
-            props.navigation.navigate("Pin", { mode: "update" });
-          }}
+          onPress={handleOtpSend}
           activeOpacity={0.6}
         >
           <MaterialIcons name="password" color={"black"} size={25} />

@@ -22,6 +22,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import * as Contacts from "expo-contacts";
 import { ScrollView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "react-native-ui-lib";
+import { CustomSnackbar } from "../../../Elements/UIElements/CustomSnackbar";
 // import ExpoContacts from "expo-contacts/build/ExpoContacts";
 // import Contacts from "react-native-contacts";
 const normalizeNumber = (number) => number.replace(/\D/g, "").slice(-10);
@@ -39,6 +40,13 @@ const Transfer = (props) => {
   const colors = useColors();
 
   const [detail, setDetail] = useState(null);
+
+  const [snackVisible, setSnackVisible] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
+
+  const onDismissSnackbar = () => {
+    setSnackVisible(false);
+  };
 
   const handleSearch = async (num, code) => {
     const token = await AsyncStorage.getItem("api_token");
@@ -72,7 +80,7 @@ const Transfer = (props) => {
   const handleMobileInputChange = (code, text) => {
     setSelectedCode(code);
     const filteredData = RecoverContactNumbers?.filter((item) =>
-      item?.phoneNumber?.includes(text)
+      item?.phoneNumbers?.[0]?.number?.includes(text)
     );
     // console.log("filteredData", filteredData);
     setContactDetails(filteredData);
@@ -97,37 +105,72 @@ const Transfer = (props) => {
     }
   };
 
+  // const getRegisteredContacts = async (numbers) => {
+  //   const formData = new FormData();
+
+  //   numbers?.forEach((element, index) => {
+  //     formData.append(`numbers[${index}]`, element);
+  //   });
+  //   const token = await AsyncStorage.getItem("api_token");
+  //   try {
+  //     const rs = await axios.post(baseURL + "contacts", formData, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "multipart/form-data"
+  //       }
+  //     });
+  //     console.log(rs?.status);
+  //     console.log(rs?.data);
+  //     if (rs?.status === 200) {
+  //       // const normalizeNumber = rs?.data?.map((item) => normalizeNumber(item?.));
+  //       // console.log(normalizeNumber);
+
+  //       setContactDetails(rs?.data);
+  //       setRecoverContactNumbers(rs?.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const getRegisteredContacts = async (numbers) => {
-    const formData = new FormData();
+    if (!numbers || numbers.length === 0) return;
 
-    numbers?.forEach((element, index) => {
-      formData.append(`numbers[${index}]`, element);
-    });
+    const batchSize = 100; // Set batch size
     const token = await AsyncStorage.getItem("api_token");
-    try {
-      const rs = await axios.post(baseURL + "contacts", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data"
-        }
-      });
-      console.log(rs?.status);
-      console.log(rs?.data);
-      if (rs?.status === 200) {
-        // const normalizeNumber = rs?.data?.map((item) => normalizeNumber(item?.));
-        // console.log(normalizeNumber);
+    let allContacts = []; // To collect all responses
 
-        setContactDetails(rs?.data);
-        setRecoverContactNumbers(rs?.data);
+    for (let i = 0; i < numbers.length; i += batchSize) {
+      const batch = numbers.slice(i, i + batchSize); // Get the batch of 100 numbers
+      const formData = new FormData();
+
+      batch.forEach((element, index) => {
+        formData.append(`numbers[${index}]`, element);
+      });
+
+      try {
+        const rs = await axios.post(baseURL + "contacts", formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
+          }
+        });
+
+        if (rs?.status === 200 && rs?.data) {
+          allContacts = [...allContacts, ...rs.data]; 
+        }
+      } catch (error) {
+        console.log("Error fetching contacts:", error);
       }
-    } catch (error) {
-      console.log(error);
     }
+    console.log(allContacts);
+
+    // Once all requests are completed, update state
+    // setContactDetails(allContacts);
+    // setRecoverContactNumbers(allContacts);
   };
 
   useEffect(() => {
-    console.log("check");
-
     (async () => {
       const { status } = await Contacts.requestPermissionsAsync();
       if (status === "granted") {
@@ -141,6 +184,10 @@ const Transfer = (props) => {
             .filter(Boolean);
 
           getRegisteredContacts(onlyNumbers);
+          console.log(data[0]?.name);
+
+          setContactDetails(data);
+          setRecoverContactNumbers(data);
           // setContactNumbers(data);
         } else {
           console.log("No contacts found");
@@ -172,11 +219,13 @@ const Transfer = (props) => {
         }
       })
       .catch((err) => {
+        setNumber("");
         console.log(err);
-
-        setDetail({
-          message: "No Data found"
-        });
+        setSnackVisible(true);
+        setSnackMessage(
+          "This number is not registered on 'Casham'. Please invite them to join the application."
+        );
+        setDetail(null);
       });
   };
 
@@ -318,7 +367,9 @@ const Transfer = (props) => {
             return (
               <TouchableScale
                 key={index}
-                onPress={() => handleSearchByContactNumber(item?.phoneNumber)}
+                onPress={() =>
+                  handleSearchByContactNumber(item?.phoneNumbers?.[0]?.number)
+                }
               >
                 <Card
                   style={{
@@ -346,7 +397,7 @@ const Transfer = (props) => {
                     >
                       {item?.name}
                     </Text>
-                    <Text>{item?.phoneNumber}</Text>
+                    <Text>{item?.phoneNumbers?.[0]?.number}</Text>
                   </View>
                   {/* <MaterialCommunityIcons
                   style={{
@@ -387,6 +438,11 @@ const Transfer = (props) => {
           Continue
         </Text>
       </TouchableScale>
+      <CustomSnackbar
+        visible={snackVisible}
+        title={snackMessage}
+        onDismissSnackbar={onDismissSnackbar}
+      />
     </SafeAreaView>
   );
 };

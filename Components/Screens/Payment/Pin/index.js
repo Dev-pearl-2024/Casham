@@ -75,7 +75,16 @@ const Pin = (props) => {
           setTimeout(() => {
             setLoading(false);
             alert("Pin update successful");
-            props.navigation.goBack();
+            // props.navigation.goBack();
+            props.navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: "Dashboard",
+                  params: { page: "Settings" }
+                }
+              ]
+            });
           }, 2000);
         } else {
           setLoading(true);
@@ -92,9 +101,8 @@ const Pin = (props) => {
           });
           const token = await AsyncStorage.getItem("api_token");
           console.log(token);
-
-          await axios
-            .post(
+          try {
+            const rs = await axios.post(
               baseURL + "payments",
               {
                 AccountNo: AccountNo,
@@ -112,41 +120,47 @@ const Pin = (props) => {
                   Authorization: `Bearer ${token}`
                 }
               }
-            )
-            .then((rs) => {
-              setLoading(false);
-              console.log(rs.data);
-              props.navigation.navigate("CompleteTransaction", {
-                success: true,
-                amount: props.route.params.amount,
-                pinWrong: false
-              });
-            })
-            .catch((err) => {
-              setLoading(false);
-              console.log(err);
-              alert("Error sending payment");
-              props.navigation.navigate("CompleteTransaction", {
-                success: false,
-                amount: props.route.params.amount,
-                pinWrong: true
-              });
+            );
+            // .then((rs) => {
+            setLoading(false);
+            let responseData = rs.data;
+
+            console.log("Transaction Data:", responseData);
+
+            props.navigation.navigate("CompleteTransaction", {
+              success: true,
+              amount: props.route.params.amount,
+              pinWrong: false,
+              transaction_id: responseData?.transaction_details
             });
+            // })
+          } catch (err) {
+            // .catch((err) => {
+            setLoading(false);
+            console.log(err);
+            alert("Error sending payment");
+            props.navigation.navigate("CompleteTransaction", {
+              success: false,
+              amount: props.route.params.amount,
+              pinWrong: true
+            });
+            // });
 
-          setLoading(false);
-          // if (pinValue == pin) {
-          //     props.navigation.navigate('CompleteTransaction', {
-          //         success: true, amount: props.route.params.amount,
-          //         pinWrong: false
-          //     })
-          //     console.log("correct pin");
+            setLoading(false);
+            // if (pinValue == pin) {
+            //     props.navigation.navigate('CompleteTransaction', {
+            //         success: true, amount: props.route.params.amount,
+            //         pinWrong: false
+            //     })
+            //     console.log("correct pin");
 
-          // } else {
-          //     props.navigation.navigate('CompleteTransaction', {
-          //         success: false, amount: props.route.params.amount,
-          //         pinWrong: true
-          //     })
-          // }
+            // } else {
+            //     props.navigation.navigate('CompleteTransaction', {
+            //         success: false, amount: props.route.params.amount,
+            //         pinWrong: true
+            //     })
+            // }
+          }
         }
       } else {
         alert("Please enter a 4-digit PIN before proceeding.");
@@ -250,11 +264,11 @@ const styles = StyleSheet.create({
   },
   keyboard: {
     width: "100%",
-    marginTop: 20,
-    paddingBottom: 30,
+    // marginTop: 20,
+    paddingBottom: 0,
     alignSelf: "center",
     position: "absolute",
-    bottom: 0,
+    bottom: 0
     // left: 0
   },
   row: {
