@@ -39,6 +39,8 @@ import Transfer from "./Components/Screens/Payment/Transfer";
 import ShowTransaction from "./Components/Screens/Transaction/ShowTransaction";
 import ContactPopup from "./Components/Screens/Dashboard/Settings/Contact";
 import History from "./Components/Screens/History";
+import Withdraw_Data from "./Components/Screens/Withdraw";
+import Purchase_Vouchar from "./Components/Screens/Withdraw/Purchase";
 
 const Stack = createStackNavigator();
 
@@ -161,6 +163,11 @@ function App() {
             <Stack.Screen name="Transaction" component={Transaction} />
             <Stack.Screen name="BankScreen" component={BankScreen} />
             <Stack.Screen name="History" component={History} />
+            <Stack.Screen name="WithdrawData" component={Withdraw_Data} />
+            <Stack.Screen
+              name="Purchase_Vouchar"
+              component={Purchase_Vouchar}
+            />
             <Stack.Screen name="Pin" component={Pin} />
             <Stack.Screen
               name="Contact"

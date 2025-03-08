@@ -71,95 +71,150 @@ const Pin = (props) => {
               console.log(err);
             });
         } else if (props.route.params.mode === "update") {
-          setLoading(true);
-          setTimeout(() => {
-            setLoading(false);
-            alert("Pin update successful");
-            // props.navigation.goBack();
-            props.navigation.reset({
-              index: 0,
-              routes: [
-                {
-                  name: "Dashboard",
-                  params: { page: "Settings" }
-                }
-              ]
-            });
-          }, 2000);
-        } else {
-          setLoading(true);
-          const AccountNo = props.route.params.acc_id;
-          const AccountType = props.route.params.account_type;
-          const AccountBranch = props.route.params.bank_branch;
-          const amount = props.route.params.amount;
-          const currency = "GHS";
-          var longitude = "";
-          var latitude = "";
-          getLastKnownPositionAsync().then((rs) => {
-            longitude = rs.coords.longitude;
-            latitude = rs.coords.latitude;
-          });
+          const formData = new FormData();
           const token = await AsyncStorage.getItem("api_token");
-          console.log(token);
-          try {
-            const rs = await axios.post(
-              baseURL + "payments",
-              {
-                AccountNo: AccountNo,
-                AccountBranch: AccountBranch,
-                AccountType: AccountType,
-                amount: amount,
-                currency: currency,
-                longitude: longitude,
-                latitude: latitude,
-                paymentPin: pin.toString()
-              },
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                  Authorization: `Bearer ${token}`
-                }
+          setLoading(true);
+          formData.append("paymentPin", pin);
+          await axios
+            .post(baseURL + "Pin", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`
               }
-            );
-            // .then((rs) => {
-            setLoading(false);
-            let responseData = rs.data;
+            })
+            .then(async (rs) => {
+              if (rs.data.status == 200) {
+                setLoading(false);
+                console.log("pin Data", rs.data);
 
-            console.log("Transaction Data:", responseData);
-
-            props.navigation.navigate("CompleteTransaction", {
-              success: true,
-              amount: props.route.params.amount,
-              pinWrong: false,
-              transaction_id: responseData?.transaction_details
+                await AsyncStorage.setItem("pin", pin);
+                alert("Pin update successful");
+                props.navigation.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: "Dashboard",
+                      params: { page: "Settings" }
+                    }
+                  ]
+                });
+              } else {
+                alert("Error updating pin, Try again!");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              setLoading(false);
             });
-            // })
-          } catch (err) {
-            // .catch((err) => {
-            setLoading(false);
-            console.log(err);
-            alert("Error sending payment");
-            props.navigation.navigate("CompleteTransaction", {
-              success: false,
-              amount: props.route.params.amount,
-              pinWrong: true
+        } else {
+          if (props.route.params.mode === "VoucherVerify") {
+            setLoading(true);
+            const token = await AsyncStorage.getItem("api_token");
+            const formData = new FormData();
+            formData.append("amount", props.route.params.amount);
+            formData.append("expiryDays", props.route.params.expiryDays);
+            formData.append("pin", pin.toString());
+            try {
+              const rs = await axios.post(
+                baseURL + "/voucher/create",
+                formData,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data"
+                  }
+                }
+              );
+              if (rs.status === 200) {
+                props.navigation.navigate("WithdrawData");
+                setLoading(false);
+              }
+              console.log("voucher verify", rs.status);
+            } catch (error) {
+              console.log(error);
+              setLoading(false);
+            }
+          } else {
+            setLoading(true);
+            const AccountNo = props.route.params.acc_id;
+            const AccountType = props.route.params.account_type;
+            const AccountBranch = props.route.params.bank_branch;
+            const amount = props.route.params.amount;
+            const currency = "GHS";
+            var longitude = "";
+            var latitude = "";
+            getLastKnownPositionAsync().then((rs) => {
+              longitude = rs.coords.longitude;
+              latitude = rs.coords.latitude;
             });
-            // });
+            const token = await AsyncStorage.getItem("api_token");
+            console.log(token);
+            try {
+              const rs = await axios.post(
+                baseURL + "payments",
+                {
+                  AccountNo: AccountNo,
+                  AccountBranch: AccountBranch,
+                  AccountType: AccountType,
+                  amount: amount,
+                  currency: currency,
+                  longitude: longitude,
+                  latitude: latitude,
+                  paymentPin: pin.toString()
+                },
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`
+                  }
+                }
+              );
+              // .then((rs) => {
+              setLoading(false);
+              let responseData = rs.data;
 
-            setLoading(false);
-            // if (pinValue == pin) {
-            //     props.navigation.navigate('CompleteTransaction', {
-            //         success: true, amount: props.route.params.amount,
-            //         pinWrong: false
-            //     })
-            //     console.log("correct pin");
+              console.log("Transaction Data:", responseData);
 
-            // } else {
-            //     props.navigation.navigate('CompleteTransaction', {
-            //         success: false, amount: props.route.params.amount,
-            //         pinWrong: true
-            //     })
-            // }
+              props.navigation.navigate("CompleteTransaction", {
+                success: true,
+                amount: props.route.params.amount,
+                pinWrong: false,
+                transaction_id: responseData?.transaction_details
+              });
+              // })
+            } catch (err) {
+              // .catch((err) => {
+              setLoading(false);
+
+              // Log the full error response to understand its structure
+              console.log("Full Error Response:", err.response?.data);
+
+              // Extract the actual error message
+              const errorMessage = err.response?.data || "Something went wrong";
+
+              // Show the error message in an alert
+              alert(errorMessage);
+
+              // Navigate to CompleteTransaction with error info
+              props.navigation.navigate("CompleteTransaction", {
+                success: false,
+                amount: props.route.params.amount,
+                pinWrong: true
+              });
+              // if (pinValue == pin) {
+              //     props.navigation.navigate('CompleteTransaction', {
+              //         success: true, amount: props.route.params.amount,
+              //         pinWrong: false
+              //     })
+              //     console.log("correct pin");
+
+              // } else {
+              //     props.navigation.navigate('CompleteTransaction', {
+              //         success: false, amount: props.route.params.amount,
+              //         pinWrong: true
+              //     })
+              // }
+            }
           }
         }
       } else {

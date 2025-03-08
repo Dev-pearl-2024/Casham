@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, Animated, Easing, ScrollView } from "react-native";
+import {
+  SafeAreaView,
+  Animated,
+  Easing,
+  ScrollView,
+  BackHandler,
+  Alert
+} from "react-native";
 import { AnimatedFAB, Portal } from "react-native-paper";
 import Home from "./Home";
 import Deposit from "./Deposit";
@@ -16,6 +23,29 @@ const Dashboard = (props) => {
   const [visibleTitle, setVisibleTitle] = useState(true);
   const [page, setPage] = useState(props.route.params?.page || "Home");
   const [fabVisible, setFabVisible] = useState(true);
+
+  useEffect(() => {
+    const backAction = () => {
+      const canGoBack = navigator.canGoBack();
+
+      if (canGoBack) {
+        navigator.goBack();
+      } else {
+        Alert.alert("Hold on", "Exit confirmation", [
+          { text: "Cancel", onPress: () => null, style: "cancel" },
+          { text: "Yes", onPress: () => BackHandler.exitApp() }
+        ]);
+      }
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [navigator]);
 
   useEffect(() => {
     // if (props.route.params?.page === "Settings") {

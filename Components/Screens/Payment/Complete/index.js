@@ -7,7 +7,7 @@ import CustomButton from "../../../Elements/UIElements/Button";
 
 const CompleteTransaction = (props) => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <TouchableOpacity
         style={{
           borderWidth: 1,
@@ -132,7 +132,7 @@ const CompleteTransaction = (props) => {
         )}
       </View>
 
-      <View style={{ alignSelf: "center", bottom: -50 }}>
+      <View style={{ position: "absolute", alignSelf: "center", bottom: 20 }}>
         <CustomButton
           label={"Go back to Dashboard"}
           onPress={() => {

@@ -188,10 +188,12 @@ export default Home = ({ props }) => {
                     : item.originName}
                 </Text>
               </View>
-              <View style={{
-                alignItems:"center",
-                justifyContent:"center"
-              }}>
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
                 {data?.name !== item.originName ? (
                   <Text
                     style={{
@@ -368,6 +370,7 @@ export default Home = ({ props }) => {
                   justifyContent: "center"
                 }}
                 activeOpacity={0.6}
+                onPress={() => props.navigation.navigate("WithdrawData")}
               >
                 <View
                   style={{

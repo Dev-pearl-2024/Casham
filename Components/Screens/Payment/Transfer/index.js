@@ -4,6 +4,7 @@ import { Card, Text, TextInput } from "react-native-paper";
 import {
   Appearance,
   Dimensions,
+  FlatList,
   Image,
   NativeModules,
   PermissionsAndroid,
@@ -23,6 +24,7 @@ import * as Contacts from "expo-contacts";
 import { ScrollView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "react-native-ui-lib";
 import { CustomSnackbar } from "../../../Elements/UIElements/CustomSnackbar";
+import { Loader } from "../../../Elements/UIElements/Loader";
 // import ExpoContacts from "expo-contacts/build/ExpoContacts";
 // import Contacts from "react-native-contacts";
 const normalizeNumber = (number) => number.replace(/\D/g, "").slice(-10);
@@ -43,6 +45,17 @@ const Transfer = (props) => {
 
   const [snackVisible, setSnackVisible] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [storeToken, setStoreToken] = useState(null);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const storedToken = await AsyncStorage.getItem("api_token");
+      setStoreToken(storedToken);
+    };
+    fetchToken();
+  }, []);
 
   const onDismissSnackbar = () => {
     setSnackVisible(false);
@@ -157,7 +170,7 @@ const Transfer = (props) => {
         });
 
         if (rs?.status === 200 && rs?.data) {
-          allContacts = [...allContacts, ...rs.data]; 
+          allContacts = [...allContacts, ...rs.data];
         }
       } catch (error) {
         console.log("Error fetching contacts:", error);
@@ -170,42 +183,60 @@ const Transfer = (props) => {
     // setRecoverContactNumbers(allContacts);
   };
 
+  // const storedData = async () => {
+  //   const storedData = await AsyncStorage.getItem("contacts");
+  //   console.log("stored Data", JSON.parse(storedData));
+  //   setContactDetails(JSON.parse(storedData));
+  // };
+  // useEffect(() => {
+  //   storedData();
+  // }, []);
+
+  const fetchContacts = async () => {
+    setLoading(true);
+
+    const { status } = await Contacts.requestPermissionsAsync();
+    if (status !== "granted") return;
+
+    const { data } = await Contacts.getContactsAsync({
+      fields: [Contacts.Fields.PhoneNumbers]
+    });
+
+    if (data.length > 0) {
+      const formattedContacts = data
+        .map((item) => ({
+          name: item.name,
+          number: item.phoneNumbers?.[0]?.number || ""
+        }))
+        .filter((item) => item.number); // Remove empty numbers
+
+      // await AsyncStorage.setItem("contacts", JSON.stringify(formattedContacts));
+      setContactDetails(formattedContacts);
+      setLoading(false);
+    }
+
+    setLoading(false);
+  };
+
   useEffect(() => {
-    (async () => {
-      const { status } = await Contacts.requestPermissionsAsync();
-      if (status === "granted") {
-        const { data } = await Contacts.getContactsAsync({
-          fields: [Contacts.Fields.PhoneNumbers]
-        });
-
-        if (data.length > 0) {
-          const onlyNumbers = data
-            .map((item) => item.phoneNumbers?.[0]?.number)
-            .filter(Boolean);
-
-          getRegisteredContacts(onlyNumbers);
-          console.log(data[0]?.name);
-
-          setContactDetails(data);
-          setRecoverContactNumbers(data);
-          // setContactNumbers(data);
-        } else {
-          console.log("No contacts found");
-        }
-      } else {
-        console.log("Permission denied");
-      }
-    })();
+    fetchContacts();
   }, []);
 
   const handleSearchByContactNumber = async (number) => {
     setNumber(number);
-    const token = await AsyncStorage.getItem("api_token");
-    const formattedPhoneNumber = `%2B${number.replace("+", "")}`;
+    setLoading(true);
+    // const token = await AsyncStorage.getItem("api_token");
+    let formattedPhoneNumber;
+    if (number.includes("+")) {
+      formattedPhoneNumber = `%2B${number.replace("+", "")}`;
+    } else {
+      formattedPhoneNumber = number;
+    }
+    console.log(number);
     await axios
       .get(baseURL + `paymentDetails?phoneNumber=${formattedPhoneNumber}`, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${storeToken}`
         }
       })
       .then((rs) => {
@@ -217,6 +248,7 @@ const Transfer = (props) => {
 
           handleNavigationToTransferPage(number, rs.data);
         }
+        setLoading(false);
       })
       .catch((err) => {
         setNumber("");
@@ -226,6 +258,7 @@ const Transfer = (props) => {
           "This number is not registered on 'Casham'. Please invite them to join the application."
         );
         setDetail(null);
+        setLoading(false);
       });
   };
 
@@ -264,7 +297,7 @@ const Transfer = (props) => {
             marginTop: 10
           }}
         >
-          Transfer Number
+          Transfer to Number
         </Text>
         <Text
           style={{
@@ -367,9 +400,7 @@ const Transfer = (props) => {
             return (
               <TouchableScale
                 key={index}
-                onPress={() =>
-                  handleSearchByContactNumber(item?.phoneNumbers?.[0]?.number)
-                }
+                onPress={() => handleSearchByContactNumber(item.number)}
               >
                 <Card
                   style={{
@@ -397,16 +428,16 @@ const Transfer = (props) => {
                     >
                       {item?.name}
                     </Text>
-                    <Text>{item?.phoneNumbers?.[0]?.number}</Text>
+                    <Text>{item?.number}</Text>
                   </View>
                   {/* <MaterialCommunityIcons
-                  style={{
-                    fontWeight: "bold"
-                  }}
-                  name="check"
-                  size={24}
-                  color="green"
-                /> */}
+                style={{
+                  fontWeight: "bold"
+                }}
+                name="check"
+                size={24}
+                color="green"
+              /> */}
                 </Card>
               </TouchableScale>
             );
@@ -443,6 +474,7 @@ const Transfer = (props) => {
         title={snackMessage}
         onDismissSnackbar={onDismissSnackbar}
       />
+      <Loader visible={loading} />
     </SafeAreaView>
   );
 };
