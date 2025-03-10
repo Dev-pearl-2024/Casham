@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -8,7 +8,8 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  Animated
 } from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -37,6 +38,17 @@ const Withdraw_Data = (props) => {
   const [dataVisiable, setDataVIsiable] = useState(null);
 
   const [voucher, setVoucher] = useState(true);
+
+  const slideAnim = useRef(new Animated.Value(50)).current;
+
+  useEffect(() => {
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 700,
+      useNativeDriver: true
+    }).start();
+  }, []);
+
   useEffect(() => {
     StatusBar.setHidden(true);
   }, []);
@@ -96,10 +108,93 @@ const Withdraw_Data = (props) => {
     return voucher ? (
       myVoucher?.length > 0 ? (
         myVoucher?.map((item, index) => (
+          <Animated.View
+            key={index}
+            style={{ transform: [{ translateY: slideAnim }] }}
+          >
+            <TouchableScale
+              style={{
+                width: Dimensions.get("window").width * 0.95,
+                // height: 70,
+                borderRadius: 10,
+                backgroundColor: "#eee",
+                marginTop: 10,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "spa",
+                paddingHorizontal: 15,
+                paddingVertical: 2,
+                gap: 20
+              }}
+              onPress={() => {
+                setIsVIsiable(true);
+                setDataVIsiable(item);
+              }}
+            >
+              {/* <Image
+        style={{ width: 50, height: 50 }}
+        source={{
+          uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnybLZQkb8BG9uN4bX31TBXP51qPlA3gD00g&s"
+        }}
+        resizeMode="contain"
+      /> */}
+              <QRCode
+                value={item?.voucher}
+                size={Dimensions.get("window").width / 5.5}
+              />
+              <View
+                style={{ marginVertical: 10, backgroundColor: "transparent" }}
+              >
+                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                  SLE :{" "}
+                  <Text style={{ fontWeight: "600", fontSize: 14 }}>
+                    {item?.amount}
+                  </Text>
+                </Text>
+                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                  Expire :{" "}
+                  {item?.expiresAt ? (
+                    <Text style={{ fontWeight: "600", fontSize: 14 }}>
+                      {new Date(item?.expiresAt).toLocaleDateString()},{" "}
+                      {new Date(item?.expiresAt).toLocaleTimeString()}
+                    </Text>
+                  ) : (
+                    "..."
+                  )}
+                </Text>
+                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                  Status :{" "}
+                  <Text
+                    style={{
+                      fontWeight: "600",
+                      fontSize: 14,
+                      color: item?.status === "ACTIVE" ? "green" : ""
+                    }}
+                  >
+                    {item?.status}
+                  </Text>
+                </Text>
+              </View>
+            </TouchableScale>
+          </Animated.View>
+        ))
+      ) : (
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <Text>No data found</Text>
+        </View>
+      )
+    ) : history?.length > 0 ? (
+      history?.map((item, index) => (
+        <Animated.View
+          key={index}
+          style={{ transform: [{ translateY: slideAnim }] }}
+        >
           <TouchableScale
             key={index}
             style={{
-              width: "90%",
+              width: Dimensions.get("window").width * 0.95,
               // height: 70,
               borderRadius: 10,
               backgroundColor: "#eee",
@@ -117,12 +212,12 @@ const Withdraw_Data = (props) => {
             }}
           >
             {/* <Image
-        style={{ width: 50, height: 50 }}
-        source={{
-          uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnybLZQkb8BG9uN4bX31TBXP51qPlA3gD00g&s"
-        }}
-        resizeMode="contain"
-      /> */}
+          style={{ width: 50, height: 50 }}
+          source={{
+            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnybLZQkb8BG9uN4bX31TBXP51qPlA3gD00g&s"
+          }}
+          resizeMode="contain"
+        /> */}
             <QRCode
               value={item?.voucher}
               size={Dimensions.get("window").width / 4.5}
@@ -138,9 +233,14 @@ const Withdraw_Data = (props) => {
               </Text>
               <Text style={{ fontWeight: "bold", fontSize: 16 }}>
                 Expire :{" "}
-                <Text style={{ fontWeight: "600", fontSize: 14 }}>
-                  {item?.expiresAt}
-                </Text>
+                {item?.expiresAt ? (
+                  <Text style={{ fontWeight: "600", fontSize: 14 }}>
+                    {new Date(item?.expiresAt).toLocaleDateString()},{" "}
+                    {new Date(item?.expiresAt).toLocaleTimeString()}
+                  </Text>
+                ) : (
+                  "..."
+                )}
               </Text>
               <Text style={{ fontWeight: "bold", fontSize: 16 }}>
                 Status :{" "}
@@ -150,68 +250,7 @@ const Withdraw_Data = (props) => {
               </Text>
             </View>
           </TouchableScale>
-        ))
-      ) : (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text>No data found</Text>
-        </View>
-      )
-    ) : history?.length > 0 ? (
-      history?.map((item, index) => (
-        <TouchableScale
-          key={index}
-          style={{
-            width: "90%",
-            // height: 70,
-            borderRadius: 10,
-            backgroundColor: "#eee",
-            marginTop: 20,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "spa",
-            paddingHorizontal: 20,
-            paddingVertical: 5,
-            gap: 20
-          }}
-          onPress={() => {
-            setIsVIsiable(true);
-            setDataVIsiable(item);
-          }}
-        >
-          {/* <Image
-          style={{ width: 50, height: 50 }}
-          source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnybLZQkb8BG9uN4bX31TBXP51qPlA3gD00g&s"
-          }}
-          resizeMode="contain"
-        /> */}
-          <QRCode
-            value={item?.voucher}
-            size={Dimensions.get("window").width / 4.5}
-          />
-          <View style={{ marginVertical: 10, backgroundColor: "transparent" }}>
-            <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-              SLE :{" "}
-              <Text style={{ fontWeight: "600", fontSize: 14 }}>
-                {item?.amount}
-              </Text>
-            </Text>
-            <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-              Expire :{" "}
-              <Text style={{ fontWeight: "600", fontSize: 14 }}>
-                {item?.expiresAt}
-              </Text>
-            </Text>
-            <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-              Status :{" "}
-              <Text style={{ fontWeight: "600", fontSize: 14 }}>
-                {item?.status}
-              </Text>
-            </Text>
-          </View>
-        </TouchableScale>
+        </Animated.View>
       ))
     ) : (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -297,7 +336,11 @@ const Withdraw_Data = (props) => {
         </View>
 
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            alignItems: "center",
+            paddingBottom: 50
+          }}
         >
           {renderReceivedData()}
         </ScrollView>
@@ -326,7 +369,7 @@ const Withdraw_Data = (props) => {
                 icon: "qrcode-scan",
                 label: "Redeem",
                 labelTextColor: "#007AFF",
-                onPress: () => console.log("Spreadsheet")
+                onPress: () => props.navigation.navigate("Redeem_Scan")
               }
             ]}
             onStateChange={({ open }) => setOpen(open)}
@@ -422,10 +465,12 @@ const Withdraw_Data = (props) => {
                 }}
               >
                 <Text style={[style.paymentText, { color: Colors.primary }]}>
-                  Expiry
+                  Created on
                 </Text>
+
                 <Text>
-                  {dataVisiable?.expiresAt ? dataVisiable?.expiresAt : "-"}
+                  {new Date(dataVisiable?.createdAt).toLocaleDateString()},{" "}
+                  {new Date(dataVisiable?.createdAt).toLocaleTimeString()}
                 </Text>
               </View>
               <View
@@ -436,13 +481,20 @@ const Withdraw_Data = (props) => {
                 }}
               >
                 <Text style={[style.paymentText, { color: Colors.primary }]}>
-                  Created on
+                  Expiry
                 </Text>
-                <Text>
-                  {" "}
-                  {new Date(dataVisiable?.createdAt).toLocaleDateString()}
-                </Text>
+                {dataVisiable?.expiresAt ? (
+                  <Text
+                    style={{ fontWeight: "600", fontSize: 14, color: "red" }}
+                  >
+                    {new Date(dataVisiable?.expiresAt).toLocaleDateString()},{" "}
+                    {new Date(dataVisiable?.expiresAt).toLocaleTimeString()}
+                  </Text>
+                ) : (
+                  <Text>{"..."}</Text>
+                )}
               </View>
+
               <View
                 style={{
                   flexDirection: "row",
@@ -454,7 +506,9 @@ const Withdraw_Data = (props) => {
                   Used At
                 </Text>
                 <Text>
-                  {new Date(dataVisiable?.usedAt).toLocaleDateString()}
+                  {dataVisiable?.usedAt
+                    ? new Date(dataVisiable?.usedAt).toLocaleDateString()
+                    : "..."}
                 </Text>
               </View>
               <View

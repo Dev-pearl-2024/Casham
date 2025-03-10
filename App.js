@@ -41,6 +41,7 @@ import ContactPopup from "./Components/Screens/Dashboard/Settings/Contact";
 import History from "./Components/Screens/History";
 import Withdraw_Data from "./Components/Screens/Withdraw";
 import Purchase_Vouchar from "./Components/Screens/Withdraw/Purchase";
+import Redeem_Scan from "./Components/Screens/Withdraw/Redeem";
 
 const Stack = createStackNavigator();
 
@@ -164,6 +165,7 @@ function App() {
             <Stack.Screen name="BankScreen" component={BankScreen} />
             <Stack.Screen name="History" component={History} />
             <Stack.Screen name="WithdrawData" component={Withdraw_Data} />
+            <Stack.Screen name="Redeem_Scan" component={Redeem_Scan} />
             <Stack.Screen
               name="Purchase_Vouchar"
               component={Purchase_Vouchar}

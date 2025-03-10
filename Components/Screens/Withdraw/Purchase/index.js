@@ -155,7 +155,7 @@ const Purchase_Vouchar = (props) => {
             >
               <Picker
                 selectedValue={selectedDays}
-                onValueChange={(itemValue) => setSelectedDays(itemValue)}
+                onChange={(itemValue) => setSelectedDays(itemValue)}
                 placeholder="Expires In"
                 renderPicker={() => (
                   <Text
@@ -169,7 +169,13 @@ const Purchase_Vouchar = (props) => {
                   </Text>
                 )}
                 dialogProps={{
-                  height: Dimensions.get("window").height / 2
+                  height: Dimensions.get("window").height / 2,
+                  style: { backgroundColor: "red" }
+                }}
+                itemStyle={{
+                  backgroundColor: "red",
+                  color: "white",
+                  fontSize: 16
                 }}
               >
                 <Picker.Item label="7 Days" value="7" />
