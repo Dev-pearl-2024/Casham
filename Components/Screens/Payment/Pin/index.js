@@ -126,13 +126,44 @@ const Pin = (props) => {
                 }
               );
               if (rs.status === 200) {
-                props.navigation.navigate("WithdrawData");
+                props.navigation.navigate("Voucher_successfull_failed", {
+                  data: rs.data,
+                  success: true,
+                  title: "Create"
+                });
                 setLoading(false);
               }
               console.log("voucher verify", rs.status);
             } catch (error) {
-              console.log(error);
+              console.log(error.status);
               setLoading(false);
+              if (error.status === 400) {
+                Alert.alert("Ops", "This voucher is used already", [
+                  {
+                    text: "OK",
+                    onPress: () =>
+                      props.navigation.navigate("Voucher_successfull_failed", {
+                        success: false,
+                        title: "Create"
+                      })
+                  }
+                ]);
+              } else if (error.status >= 500) {
+                Alert.alert(
+                  "Network Error",
+                  "Something went wrong. Please try again later.",
+                  [
+                    {
+                      text: "OK",
+                      onPress: () =>
+                        navigation.navigate("Voucher_successfull_failed", {
+                          success: false,
+                          title: "Create"
+                        })
+                    }
+                  ]
+                );
+              }
             }
           } else {
             setLoading(true);

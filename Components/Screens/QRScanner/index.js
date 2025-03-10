@@ -1,5 +1,5 @@
 import { CameraView } from "expo-camera";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Dimensions, Image, Linking, View } from "react-native";
 import { BackButton } from "../../Elements/UIElements/BackButton";
 import axios from "axios";
@@ -9,7 +9,7 @@ import { baseURL } from "../../API/baseURL";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
 const QRScanner = (props) => {
-  const [isScanned, setIsScanned] = useState(false); 
+  const [isScanned, setIsScanned] = useState(false);
 
   const decodeQR = async (data) => {
     try {
@@ -40,7 +40,7 @@ const QRScanner = (props) => {
           }
         })
         .catch((err) => {
-        //   console.log(err.response.data.message);
+          //   console.log(err.response.data.message);
         });
     } catch (error) {
       console.error(
@@ -69,6 +69,8 @@ const QRScanner = (props) => {
     RequestPermission();
   }, []);
 
+  const isScannedRef = useRef(false);
+
   return (
     <View style={{ flex: 1 }}>
       <CameraView
@@ -76,8 +78,9 @@ const QRScanner = (props) => {
         barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
         style={{ flex: 1 }}
         onBarcodeScanned={(rs) => {
-          if (!isScanned) {
-            setIsScanned(true); // Prevent further scans
+          if (!isScannedRef.current) {
+            isScannedRef.current = true;
+            setIsScanned(true);
             decodeQR(rs.data);
           }
         }}

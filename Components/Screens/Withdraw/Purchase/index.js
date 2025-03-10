@@ -17,7 +17,7 @@ const responsiveFontSize = (fontSize) => (fontSize * SCREEN_WIDTH) / 375;
 
 const Purchase_Vouchar = (props) => {
   const [isEnabled, setIsEnabled] = useState(false);
-  const [selectedDays, setSelectedDays] = useState("7");
+  const [selectedDays, setSelectedDays] = useState("");
 
   const Colors = {
     primary: "#007AFF",
@@ -136,7 +136,12 @@ const Purchase_Vouchar = (props) => {
             </Text>
             <Switch
               value={isEnabled}
-              onValueChange={(value) => setIsEnabled(value)}
+              onValueChange={(value) => {
+                setIsEnabled(value);
+                if (!value) {
+                  setSelectedDays("");
+                }
+              }}
               trackColor={{ false: "#767577", true: "#4CAF50" }}
               thumbColor={isEnabled ? "#ffffff" : "#f4f3f4"}
             />

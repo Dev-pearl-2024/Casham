@@ -9,15 +9,25 @@ import {
   View,
   TouchableWithoutFeedback,
   StyleSheet,
-  TextInput
+  TextInput,
+  Alert,
+  Keyboard
 } from "react-native";
 import { baseURL } from "../../../../API/baseURL";
+import { Loader } from "../../../../Elements/UIElements/Loader";
 
-const BottomModal = ({ visiable, navigation, setIsModalVisible }) => {
+const BottomModal = ({ visiable, navigation, setIsModalVisible, props }) => {
+  const [verified, setVerified] = useState(false);
+  const [voucherStatus, setVoucherStatus] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
+  const [isFocused, setIsFocused] = useState(false);
+
   const slideAnim = useRef(
     new Animated.Value(Dimensions.get("window").height)
   ).current;
-  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     Animated.timing(slideAnim, {
@@ -31,40 +41,148 @@ const BottomModal = ({ visiable, navigation, setIsModalVisible }) => {
 
   const handleVerify = async () => {
     console.log("Entered Code:", inputValue);
+    setLoading(true);
     try {
-      console.log(data);
       const formData = new FormData();
       formData.append("voucher ", inputValue);
       const token = await AsyncStorage.getItem("api_token");
-      const rs = await axios.post(baseURL + "voucher", {
+      const rs = await axios.get(baseURL + "voucher", {
         params: { voucherId: inputValue },
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data"
         }
       });
-      console.log(rs);
+      console.log("vouchercode", rs?.data);
 
       if (rs.status === 200) {
-        navigation.navigate("WithdrawData");
+        // navigation.navigate("WithdrawData");
+        setLoading(false);
+        if (rs?.data?.status === "USED") {
+          Alert.alert("Oops", "This voucher have already been used.", [
+            {
+              text: "OK",
+              onPress: () =>
+                props.navigation.navigate("Voucher_successfull_failed", {
+                  success: false
+                })
+            }
+          ]);
+        } else if (rs?.data === null) {
+          Alert.alert("Oops", "Please write a correct voucher code.");
+        } else {
+          setVoucherStatus(rs?.data);
+          setVerified(true);
+        }
       }
     } catch (error) {
-      console.error(
-        "Error decoding QR:",
-        error?.response?.data || error.message
-      );
+      console.log(error.status);
+      if (error.status === 400) {
+        Alert.alert("Oops", "This voucher have already been used", [
+          {
+            text: "OK",
+            onPress: () =>
+              props.navigation.navigate("Voucher_successfull_failed", {
+                success: false
+              })
+          }
+        ]);
+      } else if (error.status >= 500) {
+        Alert.alert(
+          "Network Error",
+          "Something went wrong. Please try again later.",
+          [
+            {
+              text: "OK",
+              onPress: () =>
+                navigation.navigate("Voucher_successfull_failed", {
+                  success: false
+                })
+            }
+          ]
+        );
+      }
     } finally {
-      setIsScanned(false);
+      setLoading(false);
+    }
+  };
+
+  const handleRedeemVoucher = async () => {
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("voucherCode", inputValue);
+      const token = await AsyncStorage.getItem("api_token");
+      const rs = await axios.post(baseURL + "voucher/redeem", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data"
+        }
+      });
+
+      if (rs.status === 200) {
+        setLoading(false);
+        props.navigation.navigate("Voucher_successfull_failed", {
+          data: rs.data,
+          success: true
+        });
+        setInputValue("");
+        setVerified(false);
+      }
+    } catch (error) {
+      console.log(error.status);
+      setInputValue("");
+      setVerified(false);
+      if (error.status === 400) {
+        Alert.alert("Oops", "This voucher have already been used", [
+          {
+            text: "OK",
+            onPress: () =>
+              props.navigation.navigate("Voucher_successfull_failed", {
+                success: false
+              })
+          }
+        ]);
+      } else if (error.status >= 500) {
+        Alert.alert(
+          "Network Error",
+          "Something went wrong. Please try again later.",
+          [
+            {
+              text: "OK",
+              onPress: () =>
+                navigation.navigate("Voucher_successfull_failed", {
+                  success: false
+                })
+            }
+          ]
+        );
+      }
+      // console.error(
+      //   "Error decoding QR:",
+      //   error?.response?.data || error.message
+      // );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+    <TouchableWithoutFeedback
+      onPress={(e) => {
+        e.target === e.currentTarget && setIsModalVisible(false);
+        Keyboard.dismiss();
+        setIsFocused(false);
+      }}
+    >
       <View style={styles.overlay}>
         <Animated.View
           style={[
             styles.modalContainer,
-            { transform: [{ translateY: slideAnim }] }
+            {
+              transform: [{ translateY: slideAnim }],
+              height: isFocused ? "70%" : "50%"
+            }
           ]}
         >
           <Text style={styles.title}>Enter Code</Text>
@@ -73,11 +191,26 @@ const BottomModal = ({ visiable, navigation, setIsModalVisible }) => {
             placeholder="Enter Voucher code here..."
             value={inputValue}
             onChangeText={setInputValue}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
           />
-          <TouchableOpacity style={styles.verifyButton} onPress={handleVerify}>
-            <Text style={styles.verifyButtonText}>Verify</Text>
-          </TouchableOpacity>
+          {verified ? (
+            <TouchableOpacity
+              style={styles.verifyButton}
+              onPress={handleRedeemVoucher}
+            >
+              <Text style={styles.verifyButtonText}>Redeem now</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.verifyButton}
+              onPress={handleVerify}
+            >
+              <Text style={styles.verifyButtonText}>Verify</Text>
+            </TouchableOpacity>
+          )}
         </Animated.View>
+        <Loader visible={loading} />
       </View>
     </TouchableWithoutFeedback>
   );
@@ -95,12 +228,12 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: "100%",
-    height: "50%",
-    backgroundColor: "rgb(231, 231, 231)",
+    backgroundColor: "rgb(255, 255, 255)",
     borderTopEndRadius: 30,
     borderTopLeftRadius: 30,
     padding: 20,
-    alignItems: "center"
+    alignItems: "center",
+    zIndex: 20
   },
   title: {
     fontWeight: "700",

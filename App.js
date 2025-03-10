@@ -42,6 +42,7 @@ import History from "./Components/Screens/History";
 import Withdraw_Data from "./Components/Screens/Withdraw";
 import Purchase_Vouchar from "./Components/Screens/Withdraw/Purchase";
 import Redeem_Scan from "./Components/Screens/Withdraw/Redeem";
+import Voucher_successfull_failed from "./Components/Screens/Withdraw/Voucher_successful_failed";
 
 const Stack = createStackNavigator();
 
@@ -185,6 +186,10 @@ function App() {
             <Stack.Screen
               name="CompleteTransaction"
               component={CompleteTransaction}
+            />
+            <Stack.Screen
+              name="Voucher_successfull_failed"
+              component={Voucher_successfull_failed}
             />
             <Stack.Screen name="Transfer" component={Transfer} />
             <Stack.Screen

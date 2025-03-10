@@ -21,6 +21,7 @@ import { FAB, Portal, Provider } from "react-native-paper";
 import Modal from "react-native-modal";
 import QRCode from "react-native-qrcode-svg";
 import { useFocusEffect } from "@react-navigation/native";
+import FloatingActionButton from "./Floating_action_button";
 
 // Get the device width
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -68,7 +69,10 @@ const Withdraw_Data = (props) => {
 
       if (rs.status === 200) {
         console.log("My voucher details", rs.data);
-        setMyVoucher(rs.data);
+        let sortedData = rs?.data?.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setMyVoucher(sortedData);
       }
     } catch (err) {
       console.log(err);
@@ -87,8 +91,8 @@ const Withdraw_Data = (props) => {
 
       if (response.status === 200) {
         console.log("History voucher details", response.data);
-        let sortedData = response.data.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
+        let sortedData = response?.data?.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         setHistory(sortedData);
       }
@@ -141,6 +145,7 @@ const Withdraw_Data = (props) => {
               <QRCode
                 value={item?.voucher}
                 size={Dimensions.get("window").width / 5.5}
+                backgroundColor="transparent"
               />
               <View
                 style={{ marginVertical: 10, backgroundColor: "transparent" }}
@@ -192,18 +197,17 @@ const Withdraw_Data = (props) => {
           style={{ transform: [{ translateY: slideAnim }] }}
         >
           <TouchableScale
-            key={index}
             style={{
               width: Dimensions.get("window").width * 0.95,
               // height: 70,
               borderRadius: 10,
               backgroundColor: "#eee",
-              marginTop: 20,
+              marginTop: 10,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "spa",
-              paddingHorizontal: 20,
-              paddingVertical: 5,
+              paddingHorizontal: 15,
+              paddingVertical: 2,
               gap: 20
             }}
             onPress={() => {
@@ -212,15 +216,16 @@ const Withdraw_Data = (props) => {
             }}
           >
             {/* <Image
-          style={{ width: 50, height: 50 }}
-          source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnybLZQkb8BG9uN4bX31TBXP51qPlA3gD00g&s"
-          }}
-          resizeMode="contain"
-        /> */}
+        style={{ width: 50, height: 50 }}
+        source={{
+          uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnybLZQkb8BG9uN4bX31TBXP51qPlA3gD00g&s"
+        }}
+        resizeMode="contain"
+      /> */}
             <QRCode
               value={item?.voucher}
-              size={Dimensions.get("window").width / 4.5}
+              size={Dimensions.get("window").width / 5.5}
+              backgroundColor="transparent"
             />
             <View
               style={{ marginVertical: 10, backgroundColor: "transparent" }}
@@ -232,11 +237,11 @@ const Withdraw_Data = (props) => {
                 </Text>
               </Text>
               <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                Expire :{" "}
-                {item?.expiresAt ? (
+                Used At :{" "}
+                {item?.usedAt ? (
                   <Text style={{ fontWeight: "600", fontSize: 14 }}>
-                    {new Date(item?.expiresAt).toLocaleDateString()},{" "}
-                    {new Date(item?.expiresAt).toLocaleTimeString()}
+                    {new Date(item?.usedAt).toLocaleDateString()},{" "}
+                    {new Date(item?.usedAt).toLocaleTimeString()}
                   </Text>
                 ) : (
                   "..."
@@ -244,7 +249,13 @@ const Withdraw_Data = (props) => {
               </Text>
               <Text style={{ fontWeight: "bold", fontSize: 16 }}>
                 Status :{" "}
-                <Text style={{ fontWeight: "600", fontSize: 14 }}>
+                <Text
+                  style={{
+                    fontWeight: "600",
+                    fontSize: 14,
+                    color: item?.status === "USED" ? "red" : ""
+                  }}
+                >
                   {item?.status}
                 </Text>
               </Text>
@@ -346,7 +357,7 @@ const Withdraw_Data = (props) => {
         </ScrollView>
 
         {/* Floating Action Button */}
-        <Portal>
+        {/* <Portal>
           <FAB.Group
             open={open}
             visible
@@ -374,7 +385,9 @@ const Withdraw_Data = (props) => {
             ]}
             onStateChange={({ open }) => setOpen(open)}
           />
-        </Portal>
+        </Portal> */}
+
+        <FloatingActionButton props={props} />
         <Portal>
           <Modal
             isVisible={IsVisiable}
@@ -384,8 +397,9 @@ const Withdraw_Data = (props) => {
             }}
             animationIn="fadeInUp"
             animationOut="fadeOutDown"
-            // backdropColor="white"
-            // backdropOpacity={0.5}
+            statusBarTranslucent={true}
+            // backdropColor="rgba(0, 0, 0, 0.5)"
+            // backdropOpacity={1}
           >
             <View
               style={{
@@ -430,6 +444,7 @@ const Withdraw_Data = (props) => {
                 <QRCode
                   value={dataVisiable?.voucher}
                   size={Dimensions.get("window").width / 2}
+                  backgroundColor="transparent"
                 />
               </View>
               <View
@@ -505,11 +520,14 @@ const Withdraw_Data = (props) => {
                 <Text style={[style.paymentText, { color: Colors.primary }]}>
                   Used At
                 </Text>
-                <Text>
-                  {dataVisiable?.usedAt
-                    ? new Date(dataVisiable?.usedAt).toLocaleDateString()
-                    : "..."}
-                </Text>
+                {dataVisiable?.usedAt ? (
+                  <Text style={{ fontWeight: "600", fontSize: 14 }}>
+                    {new Date(dataVisiable?.usedAt).toLocaleDateString()},{" "}
+                    {new Date(dataVisiable?.usedAt).toLocaleTimeString()}
+                  </Text>
+                ) : (
+                  <Text>{"..."}</Text>
+                )}
               </View>
               <View
                 style={{

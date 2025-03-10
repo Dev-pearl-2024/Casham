@@ -1,6 +1,7 @@
 import { CameraView } from "expo-camera";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
+  Alert,
   Dimensions,
   Image,
   Linking,
@@ -33,13 +34,42 @@ const Redeem_Scan = (props) => {
       });
 
       if (rs.status === 200) {
-        props.navigation.navigate("WithdrawData");
+        props.navigation.navigate("Voucher_successfull_failed", {
+          data: rs.data,
+          success: true
+        });
       }
     } catch (error) {
-      console.error(
-        "Error decoding QR:",
-        error?.response?.data || error.message
-      );
+      console.log(error.status);
+      if (error.status === 400) {
+        Alert.alert("Ops", "This voucher is used already", [
+          {
+            text: "OK",
+            onPress: () =>
+              props.navigation.navigate("Voucher_successfull_failed", {
+                success: false
+              })
+          }
+        ]);
+      } else if (error.status >= 500) {
+        Alert.alert(
+          "Network Error",
+          "Something went wrong. Please try again later.",
+          [
+            {
+              text: "OK",
+              onPress: () =>
+                navigation.navigate("Voucher_successfull_failed", {
+                  success: false
+                })
+            }
+          ]
+        );
+      }
+      // console.error(
+      //   "Error decoding QR:",
+      //   error?.response?.data || error.message
+      // );
     } finally {
       setIsScanned(false);
     }
@@ -60,6 +90,8 @@ const Redeem_Scan = (props) => {
     RequestPermission();
   }, []);
 
+  const isScannedRef = useRef(false);
+
   return (
     <View style={{ flex: 1 }}>
       <CameraView
@@ -67,7 +99,8 @@ const Redeem_Scan = (props) => {
         barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
         style={{ flex: 1 }}
         onBarcodeScanned={(rs) => {
-          if (!isScanned) {
+          if (!isScannedRef.current) {
+            isScannedRef.current = true;
             setIsScanned(true);
             decodeQR(rs.data);
           }
@@ -123,9 +156,10 @@ const Redeem_Scan = (props) => {
                 borderWidth: 1,
                 borderColor: "gray",
                 fontSize: 16,
-                paddingHorizontal: 10
+                paddingHorizontal: 10,
+                borderRadius: 10
               }}
-              placeholder="Tap here..."
+              placeholder="Enter voucher code..."
               editable={false}
             />
           </Pressable>
@@ -136,6 +170,7 @@ const Redeem_Scan = (props) => {
         visiable={isModalVisible}
         navigation={props.navigation}
         setIsModalVisible={setIsModalVisible}
+        props={props}
       />
     </View>
   );

@@ -25,16 +25,13 @@ import { ScrollView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "react-native-ui-lib";
 import { CustomSnackbar } from "../../../Elements/UIElements/CustomSnackbar";
 import { Loader } from "../../../Elements/UIElements/Loader";
-// import ExpoContacts from "expo-contacts/build/ExpoContacts";
-// import Contacts from "react-native-contacts";
+
 const normalizeNumber = (number) => number.replace(/\D/g, "").slice(-10);
 const Transfer = (props) => {
-  // console.log(globalThis.expo?.modules?.Contacts);
   const [number, setNumber] = useState("");
   const [mobile, setMobile] = useState("");
 
   const [RecoverContactNumbers, setRecoverContactNumbers] = useState(null);
-
   const [contactDetails, setContactDetails] = useState("");
 
   const [selectedCode, setSelectedCode] = useState("");
@@ -212,6 +209,7 @@ const Transfer = (props) => {
 
       // await AsyncStorage.setItem("contacts", JSON.stringify(formattedContacts));
       setContactDetails(formattedContacts);
+      setRecoverContactNumbers(formattedContacts);
       setLoading(false);
     }
 
@@ -394,54 +392,102 @@ const Transfer = (props) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80 }}
       >
-        {!detail &&
-          Array.isArray(contactDetails) &&
-          contactDetails?.map((item, index) => {
-            return (
-              <TouchableScale
-                key={index}
-                onPress={() => handleSearchByContactNumber(item.number)}
-              >
-                <Card
-                  style={{
-                    width: Dimensions.get("window").width - 55,
-                    backgroundColor:
-                      themeState === "dark" ? "#212121" : "#EFEFEF",
-                    marginTop: 10,
-                    alignSelf: "center"
-                  }}
-                  contentStyle={{
-                    paddingVertical: 10,
-                    paddingHorizontal: 10,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between"
-                  }}
+        {
+          !detail && Array.isArray(contactDetails) && (
+            <FlatList
+              data={contactDetails}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <TouchableScale
+                  onPress={() => handleSearchByContactNumber(item.number)}
                 >
-                  <MaterialIcons name="person" size={30} />
-                  <View style={{ flex: 0.98 }}>
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                        fontSize: 16
-                      }}
-                    >
-                      {item?.name}
-                    </Text>
-                    <Text>{item?.number}</Text>
-                  </View>
-                  {/* <MaterialCommunityIcons
-                style={{
-                  fontWeight: "bold"
-                }}
-                name="check"
-                size={24}
-                color="green"
-              /> */}
-                </Card>
-              </TouchableScale>
-            );
-          })}
+                  <Card
+                    style={{
+                      width: Dimensions.get("window").width - 55,
+                      backgroundColor:
+                        themeState === "dark" ? "#212121" : "#EFEFEF",
+                      marginTop: 10,
+                      alignSelf: "center"
+                    }}
+                    contentStyle={{
+                      paddingVertical: 10,
+                      paddingHorizontal: 10,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between"
+                    }}
+                  >
+                    <MaterialIcons name="person" size={30} />
+                    <View style={{ flex: 0.98 }}>
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: 16
+                        }}
+                      >
+                        {item?.name}
+                      </Text>
+                      <Text>{item?.number}</Text>
+                    </View>
+                    {/* <MaterialCommunityIcons
+            style={{ fontWeight: "bold" }}
+            name="check"
+            size={24}
+            color="green"
+        /> */}
+                  </Card>
+                </TouchableScale>
+              )}
+            />
+          )
+
+          // contactDetails?.map((item, index) => {
+          //   return (
+          //     <TouchableScale
+          //       key={index}
+          //       onPress={() => handleSearchByContactNumber(item.number)}
+          //     >
+          //       <Card
+          //         style={{
+          //           width: Dimensions.get("window").width - 55,
+          //           backgroundColor:
+          //             themeState === "dark" ? "#212121" : "#EFEFEF",
+          //           marginTop: 10,
+          //           alignSelf: "center"
+          //         }}
+          //         contentStyle={{
+          //           paddingVertical: 10,
+          //           paddingHorizontal: 10,
+          //           flexDirection: "row",
+          //           alignItems: "center",
+          //           justifyContent: "space-between"
+          //         }}
+          //       >
+          //         <MaterialIcons name="person" size={30} />
+          //         <View style={{ flex: 0.98 }}>
+          //           <Text
+          //             style={{
+          //               fontWeight: "bold",
+          //               fontSize: 16
+          //             }}
+          //           >
+          //             {item?.name}
+          //           </Text>
+          //           <Text>{item?.number}</Text>
+          //         </View>
+          //         {/* <MaterialCommunityIcons
+          //       style={{
+          //         fontWeight: "bold"
+          //       }}
+          //       name="check"
+          //       size={24}
+          //       color="green"
+          //     /> */}
+          //       </Card>
+          //     </TouchableScale>
+          //   );
+        }
+        {/* )} */}
       </ScrollView>
       <TouchableScale
         style={{
