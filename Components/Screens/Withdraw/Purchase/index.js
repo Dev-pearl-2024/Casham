@@ -11,6 +11,7 @@ import {
   View
 } from "react-native";
 import { Picker } from "react-native-ui-lib";
+import { BackButton } from "../../../Elements/UIElements/BackButton";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const responsiveFontSize = (fontSize) => (fontSize * SCREEN_WIDTH) / 375;
@@ -52,9 +53,10 @@ const Purchase_Vouchar = (props) => {
           padding: 10
         }}
       >
+        <BackButton props={props} />
         <Image
           source={require("../../../Elements/Images/standalonelogo.png")}
-          style={{ width: 30, height: 30 }}
+          style={{ width: 30, height: 30, marginLeft: 10 }}
         />
         <Text
           style={{

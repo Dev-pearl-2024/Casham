@@ -446,7 +446,7 @@ export default Home = ({ props }) => {
         }
       ]}
     >
-      <Text
+      {/* <Text
         style={{
           fontSize: 24,
           color: "#000",
@@ -458,7 +458,7 @@ export default Home = ({ props }) => {
         }}
       >
         Overview
-      </Text>
+      </Text> */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -496,7 +496,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   scrollViewContent: {
-    marginVertical: 0
+    marginVertical: 0,
+    marginTop: 110
   },
   card: {
     width: Dimensions.get("window").width - 40, // Adjust width for each card

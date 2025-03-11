@@ -294,6 +294,7 @@ const BankScreen = (props) => {
             <TextInput
               label={"Account Number"}
               maxLength={16}
+              minLength={10}
               left={<TextInput.Icon icon={"bank-outline"} />}
               mode="outlined"
               style={{

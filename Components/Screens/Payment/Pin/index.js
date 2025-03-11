@@ -5,7 +5,8 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  Text
+  Text,
+  Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useColors } from "../../../Elements/Themes/Colors";

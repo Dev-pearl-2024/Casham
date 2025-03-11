@@ -22,6 +22,7 @@ import Modal from "react-native-modal";
 import QRCode from "react-native-qrcode-svg";
 import { useFocusEffect } from "@react-navigation/native";
 import FloatingActionButton from "./Floating_action_button";
+import { BackButton } from "../../Elements/UIElements/BackButton";
 
 // Get the device width
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -286,9 +287,10 @@ const Withdraw_Data = (props) => {
             padding: 10
           }}
         >
+          <BackButton props={props}/>
           <Image
             source={require("../../Elements/Images/standalonelogo.png")}
-            style={{ width: 30, height: 30 }}
+            style={{ width: 30, height: 30, marginLeft:10 }}
           />
           <Text
             style={{

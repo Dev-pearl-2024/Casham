@@ -13,6 +13,7 @@ import TouchableScale from "@jonny/touchable-scale";
 import { baseURL } from "../../API/baseURL";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { compareDates } from "../../Custom/dateCheck";
+import { BackButton } from "../../Elements/UIElements/BackButton";
 
 // Get the device width
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -96,7 +97,7 @@ const History = (props) => {
               height: 70,
               borderRadius: 20,
               backgroundColor: "#eee",
-              marginTop: 20,
+              marginTop: 10,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
@@ -178,13 +179,20 @@ const History = (props) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          marginVertical: 20,
-          marginHorizontal: 20
+          paddingVertical: 20,
+          backgroundColor: "white",
+          shadowColor: "blue",
+          shadowOpacity: 0.5,
+          shadowOffset: { width: 0, height: 5 },
+          shadowRadius: 5,
+          elevation: 5,
+          padding: 10
         }}
       >
+        <BackButton props={props} />
         <Image
           source={require("../../Elements/Images/standalonelogo.png")}
-          style={{ width: 30, height: 30 }}
+          style={{ width: 30, height: 30, marginLeft: 10 }}
         />
         <Text
           style={{
