@@ -199,7 +199,8 @@ function App() {
                 animationEnabled: true,
                 animation: "slide_from_bottom",
                 gestureEnabled: true,
-                presentation: "modal",
+                presentation: "fullScreenModal",
+                headerShown:false,
                 ...TransitionPresets.ModalPresentationIOS
               }}
             />

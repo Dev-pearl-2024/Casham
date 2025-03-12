@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Animated, Dimensions, Easing, Image, TouchableOpacity, View } from "react-native";
+import { Animated, Dimensions, Easing, Image, TouchableOpacity, View, Platform } from "react-native";
 import { Card, Text } from "react-native-paper";
 import { useColors } from "../../Themes/Colors";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -58,17 +58,18 @@ const Header = ({ visible, profile }) => {
                         <>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 10 }}>
                                 <Image source={require('../../../Elements/Images/standalonelogo.png')}
-                                    style={{ width: 30, height: 30 }} />
-                                <Text style={{
+                                    style={{ width: 30, height: 30, marginLeft:Platform.OS === 'android' ? 0 : 10 }} />
+                             {Platform.OS === 'android' && <Text style={{
                                     fontSize: 20, fontWeight: 'bold',
                                     color: Colors.primary
                                 }}>Casham</Text>
+                                }
                             </View>
                             <TouchableOpacity style={{
                                 alignItems: 'center',
                                 justifyContent: 'center', borderRadius: 5, borderWidth: 1,
                                 borderColor: 'darkgray',
-                                height: 35, width: 35, marginTop: 10
+                                height: 35, width: 35, marginTop: 10, marginRight : Platform.OS === 'android' ? 0 : 10
                             }}>
                                 <Ionicons name="notifications-outline" size={20} />
                             </TouchableOpacity>

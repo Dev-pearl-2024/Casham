@@ -5,7 +5,8 @@ import {
   Text,
   View,
   ScrollView,
-  Dimensions
+  Dimensions,
+  Platform
 } from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -179,38 +180,45 @@ const History = (props) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          paddingVertical: 20,
+//          paddingVertical: 20,
           backgroundColor: "white",
           shadowColor: "blue",
           shadowOpacity: 0.5,
           shadowOffset: { width: 0, height: 5 },
           shadowRadius: 5,
           elevation: 5,
-          padding: 10
+          padding: 20,
+          position: 'absolute',
+          top:0, right: 0, left: 0,
+          zIndex:20
         }}
       >
         <BackButton props={props} />
         <Image
           source={require("../../Elements/Images/standalonelogo.png")}
-          style={{ width: 30, height: 30, marginLeft: 10 }}
+          style={{ width: 30, height: 30, marginLeft: 20 }}
         />
+
         <Text
           style={{
             fontSize: responsiveFontSize(22),
             fontWeight: "bold",
             color: Colors.primary,
-            marginLeft: 10
+            marginLeft: 10,
+            position:Platform.OS === "android" ? "" : "absolute",
+            right: Platform.OS === "android" ? 0 : 30
           }}
         >
           History
         </Text>
+
       </View>
       <ScrollView>
         <View
           style={{
             alignItems: "center",
             justifyContent: "center",
-            marginTop: 20
+            marginTop: Platform.OS === 'android' ? 100: 40
           }}
         >
           {transactions ? (

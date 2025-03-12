@@ -13,8 +13,8 @@ export function compareDates(inputDate) {
     const daysDifference = timeDifference / (1000 * 3600 * 24);
 
     if (daysDifference > 0) {
-        return `${Math.abs(daysDifference)} days ago`;
+        return `${Math.floor(daysDifference)} days ago`;
     } else {
-        return `Future date: ${Math.abs(daysDifference)} days ahead`;
+        return `Future date: ${Math.floor(daysDifference)} days ahead`;
     }
 }

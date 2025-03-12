@@ -158,7 +158,7 @@ const Login = (props) => {
           width: "100%",
           marginVertical: 10,
           paddingHorizontal: 25,
-          marginTop: 50
+          marginTop: 20
         }}
       >
         <BackButton props={props} />
