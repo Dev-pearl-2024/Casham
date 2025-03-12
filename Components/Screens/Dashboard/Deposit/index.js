@@ -1,7 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import stylesheet from "../../../Elements/Styles";
 import { Text } from "react-native-paper";
-import { View } from "react-native";
+import { View ,Platform} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import TouchableScale from "@jonny/touchable-scale";
 import { useEffect, useState } from "react";
@@ -155,7 +155,7 @@ export default Deposit = ({ navigation, route }) => {
           color: "#000",
           fontWeight: "bold",
           marginBottom: 0,
-          marginTop: 100,
+          marginTop: Platform.OS === 'android' ? 100 : 0,
           alignSelf: "flex-start",
           marginStart: 20
         }}

@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, StyleSheet, Dimensions, StatusBar } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Platform, StatusBar } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { useColors } from "../../../Elements/Themes/Colors";
@@ -14,7 +14,7 @@ const ShowTransaction = (props) => {
     const Colors = useColors();
 
     console.log(type);
-    
+
 
     useEffect(() => {
         if (props.route.params?.data) {
@@ -37,7 +37,8 @@ const ShowTransaction = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar translucent={true} backgroundColor="transparent" barStyle="light-content" />
+<StatusBar translucent={true} backgroundColor="transparent" barStyle="light-content" />
+
             {/* Green Background with Back Button */}
             <View style={styles.header}>
                 <View style={{ alignSelf: "flex-start", marginStart: 20 }}>

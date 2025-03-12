@@ -7,7 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View
+  View, Platform
 } from "react-native";
 import { useColors } from "../../../Elements/Themes/Colors";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
@@ -497,7 +497,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     marginVertical: 0,
-    marginTop: 110
+    marginTop:Platform.OS === 'android' ? 110 : 0
   },
   card: {
     width: Dimensions.get("window").width - 40, // Adjust width for each card

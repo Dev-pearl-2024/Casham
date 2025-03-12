@@ -180,7 +180,7 @@ const History = (props) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          paddingVertical: 20,
+          //          paddingVertical: 20,
           backgroundColor: "white",
           shadowColor: "blue",
           shadowOpacity: 0.5,
@@ -190,24 +190,25 @@ const History = (props) => {
           padding: 20,
           position: "absolute",
           top: 0,
-          left: 0,
           right: 0,
+          left: 0,
           zIndex: 20
         }}
       >
         <BackButton props={props} />
         <Image
           source={require("../../Elements/Images/standalonelogo.png")}
-          style={{ width: 30, height: 30, marginLeft: 10 }}
+          style={{ width: 30, height: 30, marginLeft: 20 }}
         />
+
         <Text
           style={{
             fontSize: responsiveFontSize(22),
             fontWeight: "bold",
             color: Colors.primary,
             marginLeft: 10,
-            position:Platform.OS === "android" ? "": "absolute",
-            right:Platform.OS === "android" ? 0 : 30
+            position: Platform.OS === "android" ? "" : "absolute",
+            right: Platform.OS === "android" ? 0 : 30
           }}
         >
           History

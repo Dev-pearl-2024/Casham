@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const FloatingActionButton = ({props}) => {
-  const [expanded, setExpanded] = useState(false);
+const FloatingActionButton = ({props,setExpanded,expanded}) => {
+//  const [expanded, setExpanded] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
   const [showOverlay, setShowOverlay] = useState(false);
 
@@ -63,7 +63,11 @@ const FloatingActionButton = ({props}) => {
         >
           <TouchableOpacity
             style={styles.subButton}
-            onPress={() => props.navigation.navigate("Redeem_Scan")}
+            onPress={() => {
+            setExpanded(false);
+            props.navigation.navigate("Redeem_Scan")
+
+            }}
           >
             <Icon name="qrcode" size={20} color="#333" />
             <Text style={styles.subButtonText}>Redeem</Text>

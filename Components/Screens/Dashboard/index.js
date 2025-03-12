@@ -5,7 +5,8 @@ import {
   Easing,
   ScrollView,
   BackHandler,
-  Alert
+  Alert,
+  Platform
 } from "react-native";
 import { AnimatedFAB, Portal } from "react-native-paper";
 import Home from "./Home";
@@ -106,8 +107,9 @@ const Dashboard = (props) => {
   return (
     <SafeAreaView style={stylesheet.container}>
       <CheckSession props={props} />
+
       <Portal>
-        <Header visible={page === "Settings" ? false : visibleTitle} />
+        <Header visible={page === "Settings" ? Platform.OS === 'ios' ? true : false : visibleTitle} />
       </Portal>
       <ScrollView
         onScroll={(tx) => {

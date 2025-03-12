@@ -38,6 +38,7 @@ const Withdraw_Data = (props) => {
   const [dataVisiable, setDataVIsiable] = useState(null);
 
   const [voucher, setVoucher] = useState(true);
+  const [expanded, setExpanded] = useState(false)
 
   const slideAnim = useRef(new Animated.Value(50)).current;
 
@@ -100,12 +101,13 @@ const Withdraw_Data = (props) => {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchVoucherHistory();
-      fetchAllVoucher();
-    }, [])
-  );
+ useFocusEffect(
+   useCallback(() => {
+     fetchVoucherHistory();
+     fetchAllVoucher();
+     setExpanded(false);
+   }, [])
+ );
 
   const renderReceivedData = () => {
     return voucher ? (
@@ -401,7 +403,7 @@ const Withdraw_Data = (props) => {
           />
         </Portal> */}
 
-        <FloatingActionButton props={props} />
+        <FloatingActionButton props={props} setExpanded = {setExpanded} expanded={expanded}/>
         <Portal>
           <Modal
             isVisible={IsVisiable}
