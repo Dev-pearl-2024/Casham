@@ -15,14 +15,12 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TouchableScale from "@jonny/touchable-scale";
 import { baseURL } from "../../API/baseURL";
-import { AntDesign } from "@expo/vector-icons";
-import { compareDates } from "../../Custom/dateCheck";
-import { FAB, Portal, Provider } from "react-native-paper";
+import { Portal, Provider } from "react-native-paper";
 import Modal from "react-native-modal";
 import QRCode from "react-native-qrcode-svg";
 import { useFocusEffect } from "@react-navigation/native";
 import FloatingActionButton from "./Floating_action_button";
-import { BackButton } from "../../Elements/UIElements/BackButton";
+import { MaterialIcons } from "@expo/vector-icons";
 
 // Get the device width
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -287,10 +285,24 @@ const Withdraw_Data = (props) => {
             padding: 10
           }}
         >
-          <BackButton props={props}/>
+          <TouchableOpacity
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 10,
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+            onPress={() => {
+              props.navigation.goBack();
+            }}
+            hitSlop={40}
+          >
+            <MaterialIcons name="arrow-back-ios-new" size={22} color={"gray"} />
+          </TouchableOpacity>
           <Image
             source={require("../../Elements/Images/standalonelogo.png")}
-            style={{ width: 30, height: 30, marginLeft:10 }}
+            style={{ width: 30, height: 30, marginLeft: 10 }}
           />
           <Text
             style={{

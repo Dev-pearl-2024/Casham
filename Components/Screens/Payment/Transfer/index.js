@@ -275,7 +275,7 @@ const Transfer = (props) => {
           alignItems: "flex-start"
         }}
       >
-        <Image
+        {/* <Image
           source={require("../../../Elements/Images/logo.png")}
           style={{
             width: 100,
@@ -284,7 +284,7 @@ const Transfer = (props) => {
             left: 20,
             marginTop: 40
           }}
-        />
+        /> */}
         <Text
           style={{
             fontSize: Dimensions.get("window").width / 20,

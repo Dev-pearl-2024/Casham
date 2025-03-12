@@ -149,7 +149,7 @@ export default Deposit = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={[stylesheet.container]}>
-      <Text
+      {/* <Text
         style={{
           fontSize: 24,
           color: "#000",
@@ -161,7 +161,7 @@ export default Deposit = ({ navigation, route }) => {
         }}
       >
         Received
-      </Text>
+      </Text> */}
       {renderReceivedData()}
     </SafeAreaView>
   );
