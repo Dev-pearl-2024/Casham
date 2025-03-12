@@ -7,7 +7,8 @@ import {
   Animated,
   StyleSheet,
   Dimensions,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Platform
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
-    zIndex: 30
+    zIndex: Platform.OS === "android" ?  30 : 0
   },
   container: {
     position: "absolute",

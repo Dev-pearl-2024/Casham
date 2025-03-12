@@ -16,7 +16,7 @@ import {
 import { baseURL } from "../../../../API/baseURL";
 import { Loader } from "../../../../Elements/UIElements/Loader";
 
-const BottomModal = ({ visiable, navigation, setIsModalVisible, props }) => {
+const BottomModal = ({ visible, navigation, setIsModalVisible, props }) => {
   const [verified, setVerified] = useState(false);
   const [voucherStatus, setVoucherStatus] = useState(false);
 
@@ -31,13 +31,13 @@ const BottomModal = ({ visiable, navigation, setIsModalVisible, props }) => {
 
   useEffect(() => {
     Animated.timing(slideAnim, {
-      toValue: visiable ? 0 : Dimensions.get("window").height,
+      toValue: visible ? 0 : Dimensions.get("window").height,
       duration: 500,
       useNativeDriver: true
     }).start();
-  }, [visiable]);
+  }, [visible]);
 
-  if (!visiable) return null;
+  if (!visible) return null;
 
   const handleVerify = async () => {
     console.log("Entered Code:", inputValue);

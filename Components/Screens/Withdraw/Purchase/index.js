@@ -72,7 +72,7 @@ const Purchase_Vouchar = (props) => {
         </Text>
       </View> */}
 
-      <CustomHeader props={props} header_name={"Create Voucher"} />
+      <CustomHeader props={props} header_name={Platform.OS === 'android' ? "Create Voucher" : ""} />
 
       <View
         style={{
@@ -206,7 +206,7 @@ const Purchase_Vouchar = (props) => {
       <View
         style={{
           position: "absolute",
-          bottom: 20,
+          bottom: Platform.OS === 'android' ? 20 : 80,
           left: 0,
           width: "100%",
           alignItems: "center",

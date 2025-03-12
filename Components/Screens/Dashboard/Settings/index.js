@@ -8,7 +8,8 @@ import {
   Linking,
   Touchable,
   TouchableOpacity,
-  View
+  View,
+  Platform
 } from "react-native";
 import { useColors } from "../../../Elements/Themes/Colors";
 import { useEffect, useState } from "react";
@@ -365,7 +366,8 @@ export default Settings = ({ props }) => {
       style={[
         stylesheet.container,
         {
-          marginBottom: 100
+          marginBottom: 100,
+          backgroundColor:Colors.primary
         }
       ]}
     >
@@ -469,7 +471,7 @@ export default Settings = ({ props }) => {
           borderTopStartRadius: 30,
           width: "100%",
           alignItems: "center",
-          marginTop: 240
+          marginTop: Platform.OS === 'android' ? 240 : 200,
         }}
       >
         {/* <ExpandableSection

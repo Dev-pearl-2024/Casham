@@ -162,6 +162,7 @@ export default Deposit = ({ navigation, route }) => {
       >
         Received
       </Text> */}
+      <View style={{marginTop:Platform.OS === 'android' ? 90 : 0}} />
       {renderReceivedData()}
     </SafeAreaView>
   );
