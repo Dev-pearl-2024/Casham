@@ -21,6 +21,7 @@ import QRCode from "react-native-qrcode-svg";
 import { useFocusEffect } from "@react-navigation/native";
 import FloatingActionButton from "./Floating_action_button";
 import { MaterialIcons } from "@expo/vector-icons";
+import CustomHeader from "../../Elements/UIElements/CustomHeader";
 
 // Get the device width
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -38,7 +39,7 @@ const Withdraw_Data = (props) => {
   const [dataVisiable, setDataVIsiable] = useState(null);
 
   const [voucher, setVoucher] = useState(true);
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false);
 
   const slideAnim = useRef(new Animated.Value(50)).current;
 
@@ -101,13 +102,13 @@ const Withdraw_Data = (props) => {
     }
   };
 
- useFocusEffect(
-   useCallback(() => {
-     fetchVoucherHistory();
-     fetchAllVoucher();
-     setExpanded(false);
-   }, [])
- );
+  useFocusEffect(
+    useCallback(() => {
+      fetchVoucherHistory();
+      fetchAllVoucher();
+      setExpanded(false);
+    }, [])
+  );
 
   const renderReceivedData = () => {
     return voucher ? (
@@ -273,7 +274,7 @@ const Withdraw_Data = (props) => {
   return (
     <Provider>
       <SafeAreaView style={{ flex: 1 }}>
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -316,8 +317,8 @@ const Withdraw_Data = (props) => {
           >
             Withdraw
           </Text>
-        </View>
-
+        </View> */}
+        <CustomHeader props={props} header_name={"Withdraw"} />
         <View
           style={{
             flexDirection: "row",
@@ -403,7 +404,11 @@ const Withdraw_Data = (props) => {
           />
         </Portal> */}
 
-        <FloatingActionButton props={props} setExpanded = {setExpanded} expanded={expanded}/>
+        <FloatingActionButton
+          props={props}
+          setExpanded={setExpanded}
+          expanded={expanded}
+        />
         <Portal>
           <Modal
             isVisible={IsVisiable}

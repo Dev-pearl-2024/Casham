@@ -15,6 +15,7 @@ import { baseURL } from "../../API/baseURL";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { compareDates } from "../../Custom/dateCheck";
 import { BackButton } from "../../Elements/UIElements/BackButton";
+import CustomHeader from "../../Elements/UIElements/CustomHeader";
 
 // Get the device width
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -176,44 +177,7 @@ const History = (props) => {
 
   return (
     <SafeAreaView>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          //          paddingVertical: 20,
-          backgroundColor: "white",
-          shadowColor: "blue",
-          shadowOpacity: 0.5,
-          shadowOffset: { width: 0, height: 5 },
-          shadowRadius: 5,
-          elevation: 5,
-          padding: 20,
-          position: "absolute",
-          top: 0,
-          right: 0,
-          left: 0,
-          zIndex: 20
-        }}
-      >
-        <BackButton props={props} />
-        <Image
-          source={require("../../Elements/Images/standalonelogo.png")}
-          style={{ width: 30, height: 30, marginLeft: 20 }}
-        />
-
-        <Text
-          style={{
-            fontSize: responsiveFontSize(22),
-            fontWeight: "bold",
-            color: Colors.primary,
-            marginLeft: 10,
-            position: Platform.OS === "android" ? "" : "absolute",
-            right: Platform.OS === "android" ? 0 : 30
-          }}
-        >
-          History
-        </Text>
-      </View>
+     <CustomHeader props={props} header_name={"History"}/>
       <ScrollView>
         <View
           style={{

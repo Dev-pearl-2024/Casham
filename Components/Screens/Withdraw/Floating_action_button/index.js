@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -10,10 +11,18 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const FloatingActionButton = ({props,setExpanded,expanded}) => {
-//  const [expanded, setExpanded] = useState(false);
+const FloatingActionButton = ({ props, setExpanded, expanded }) => {
+  //  const [expanded, setExpanded] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
   const [showOverlay, setShowOverlay] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setShowOverlay(false);
+      setExpanded(false);
+      animation.setValue(0); // Reset animation to initial state
+    }, [])
+  );
 
   const toggleMenu = () => {
     if (!expanded) {
@@ -61,17 +70,18 @@ const FloatingActionButton = ({props,setExpanded,expanded}) => {
             { opacity, transform: [{ translateY: redeemTranslateY }] }
           ]}
         >
-          <TouchableOpacity
-            style={styles.subButton}
-            onPress={() => {
-            setExpanded(false);
-            props.navigation.navigate("Redeem_Scan")
-
-            }}
-          >
-            <Icon name="qrcode" size={20} color="#333" />
-            <Text style={styles.subButtonText}>Redeem</Text>
-          </TouchableOpacity>
+          {showOverlay && (
+            <TouchableOpacity
+              style={styles.subButton}
+              onPress={() => {
+                setExpanded(false);
+                props.navigation.navigate("Redeem_Scan");
+              }}
+            >
+              <Icon name="qrcode" size={20} color="#333" />
+              <Text style={styles.subButtonText}>Redeem</Text>
+            </TouchableOpacity>
+          )}
         </Animated.View>
 
         <Animated.View
@@ -80,13 +90,15 @@ const FloatingActionButton = ({props,setExpanded,expanded}) => {
             { opacity, transform: [{ translateY: purchaseTranslateY }] }
           ]}
         >
-          <TouchableOpacity
-            style={styles.subButton}
-            onPress={() => props.navigation.navigate("Purchase_Vouchar")}
-          >
-            <Icon name="dollar" size={20} color="#333" />
-            <Text style={styles.subButtonText}>Purchase</Text>
-          </TouchableOpacity>
+          {showOverlay && (
+            <TouchableOpacity
+              style={styles.subButton}
+              onPress={() => props.navigation.navigate("Purchase_Vouchar")}
+            >
+              <Icon name="dollar" size={20} color="#333" />
+              <Text style={styles.subButtonText}>Purchase</Text>
+            </TouchableOpacity>
+          )}
         </Animated.View>
 
         <TouchableOpacity style={styles.fab} onPress={toggleMenu}>
@@ -107,7 +119,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
-    backgroundColor: "rgba(255, 255, 255, 0.9)"
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    zIndex: 30
   },
   container: {
     position: "absolute",
@@ -123,11 +136,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
-    zIndex: 20
+    zIndex: 30
   },
   subButtonContainer: {
     position: "absolute",
-    right: 0
+    right: 0,
+    zIndex:30
   },
   subButton: {
     flexDirection: "row",

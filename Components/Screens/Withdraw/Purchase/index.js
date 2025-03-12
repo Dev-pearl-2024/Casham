@@ -3,6 +3,7 @@ import {
   Button,
   Dimensions,
   Image,
+  Platform,
   SafeAreaView,
   Switch,
   Text,
@@ -12,6 +13,7 @@ import {
 } from "react-native";
 import { Picker } from "react-native-ui-lib";
 import { BackButton } from "../../../Elements/UIElements/BackButton";
+import CustomHeader from "../../../Elements/UIElements/CustomHeader";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const responsiveFontSize = (fontSize) => (fontSize * SCREEN_WIDTH) / 375;
@@ -39,7 +41,7 @@ const Purchase_Vouchar = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -68,8 +70,16 @@ const Purchase_Vouchar = (props) => {
         >
           Create Voucher
         </Text>
-      </View>
-      <View style={{ marginVertical: 20, marginHorizontal: 20 }}>
+      </View> */}
+
+      <CustomHeader props={props} header_name={"Create Voucher"} />
+
+      <View
+        style={{
+          marginVertical: Platform.OS === "android" ? 100 : 40,
+          marginHorizontal: 20
+        }}
+      >
         <Text
           style={{
             marginBottom: 20,
