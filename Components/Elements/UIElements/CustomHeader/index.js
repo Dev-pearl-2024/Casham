@@ -29,7 +29,7 @@ const CustomHeader = ({ props, header_name }) => {
         top: 0,
         right: 0,
         left: 0,
-        zIndex: 20
+        zIndex:Platform.OS === 'android' ? 20 : 0
       }}
     >
       <TouchableOpacity
@@ -49,12 +49,12 @@ const CustomHeader = ({ props, header_name }) => {
       </TouchableOpacity>
       <Image
         source={require("../../Images/standalonelogo.png")}
-        style={{ width: 30, height: 30, marginLeft: 20 }}
+        style={{ width: 25, height: 25, marginLeft: 10 }}
       />
 
       <Text
         style={{
-          fontSize: responsiveFontSize(22),
+          fontSize: responsiveFontSize(18),
           fontWeight: "bold",
           color: Colors.primary,
           marginLeft: 10,

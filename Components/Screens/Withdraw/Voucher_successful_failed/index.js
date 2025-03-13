@@ -1,6 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
-import { Dimensions, TouchableOpacity, View } from "react-native";
+import { Dimensions, TouchableOpacity, View, Platform } from "react-native";
 import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "../../../Elements/UIElements/Button";
@@ -60,7 +60,7 @@ const Voucher_successfull_failed = (props) => {
               fontSize: Dimensions.get("window").width / 16
             }}
           >
-            Voucher {props?.route?.params?.title || "Redeem"} Successful
+            Voucher {props?.route?.params?.title +"d" || "Redeemed"} Successfully
           </Text>
         ) : (
           <Text
@@ -137,7 +137,7 @@ const Voucher_successfull_failed = (props) => {
         )}
       </View>
 
-      <View style={{ position: "absolute", alignSelf: "center", bottom: 20 }}>
+      <View style={{ position: "absolute", alignSelf: "center", bottom: Platform.OS === 'android' ? 20 : 80 }}>
         <CustomButton
           label={"Go back to Withdraw"}
           onPress={() => {

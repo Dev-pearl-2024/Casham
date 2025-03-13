@@ -135,16 +135,18 @@ const Redeem_Scan = (props) => {
           style={{
             position: "absolute",
             bottom: 0,
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            backgroundColor: "rgba(255, 255, 255,0.95)",
             width: Dimensions.get("window").width,
             height: Dimensions.get("window").height / 6,
             justifyContent: "center",
             alignItems: "center",
             padding: 10,
             borderTopEndRadius: 20,
-            borderTopLeftRadius: 20
+            borderTopLeftRadius: 20,
+            zIndex:20
           }}
         >
+<<<<<<< HEAD
           {/* <Pressable
             style={{ width: "90%" }}
             onPress={() => setIsModalVisible(true)}
@@ -165,11 +167,30 @@ const Redeem_Scan = (props) => {
             onTouchStart={() => setIsModalVisible(true)}
           />
           {/* </Pressable> */}
+=======
+
+            <TextInput
+              style={{
+                width: "90%",
+                height: 40,
+                borderWidth: 1,
+                borderColor: "gray",
+                fontSize: 16,
+                paddingHorizontal: 10,
+                borderRadius: 10
+              }}
+              placeholder="Enter voucher code..."
+              editable={isModalVisible ? false : true}
+//              onFocus={()=>setIsModalVisible(true)}
+onTouchStart = {()=>setIsModalVisible(true)}
+            />
+
+>>>>>>> 8a96a75fe5130df1cef87425e3ee053eb0b1a176
         </View>
       </View>
 
       <BottomModal
-        visiable={isModalVisible}
+        visible={isModalVisible}
         navigation={props.navigation}
         setIsModalVisible={setIsModalVisible}
         props={props}

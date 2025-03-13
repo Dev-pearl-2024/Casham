@@ -136,19 +136,33 @@ const Pin = (props) => {
               }
               console.log("voucher verify", rs.status);
             } catch (error) {
-              console.log(error.status);
+              console.log(error.response.data);
               setLoading(false);
               if (error.status === 400) {
-                Alert.alert("Ops", "This voucher is used already", [
-                  {
-                    text: "OK",
-                    onPress: () =>
-                      props.navigation.navigate("Voucher_successfull_failed", {
-                        success: false,
-                        title: "Create"
-                      })
-                  }
-                ]);
+              if(error.response.data === 'Pin wrong'){
+               Alert.alert("Oops Wrong Pin", "Please Enter a correct Pin", [
+                                {
+                                  text: "OK",
+              //                    onPress: () =>
+              //                      props.navigation.navigate("Voucher_successfull_failed", {
+              //                        success: false,
+              //                        title: "Create"
+              //                      })
+                                }
+                              ]);
+              }else{
+               Alert.alert("Oops Wrong Pin", "Please Enter a correct Pin", [
+                                {
+                                  text: "OK",
+                                  onPress: () =>
+                                    props.navigation.navigate("Voucher_successfull_failed", {
+                                      success: false,
+                                      title: "Create"
+                                    })
+                                }
+                              ]);
+              }
+
               } else if (error.status >= 500) {
                 Alert.alert(
                   "Network Error",
