@@ -109,7 +109,7 @@ const Dashboard = (props) => {
       <CheckSession props={props} />
 
       <Portal>
-        <Header visible={page === "Settings" ? Platform.OS === 'ios' ? true : false : visibleTitle} />
+        <Header visible={page === "Settings" ? Platform.OS === 'android' ? false : true : visibleTitle} />
       </Portal>
       <ScrollView
         onScroll={(tx) => {

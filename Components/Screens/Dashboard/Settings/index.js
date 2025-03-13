@@ -365,7 +365,8 @@ export default Settings = ({ props }) => {
       style={[
         stylesheet.container,
         {
-          marginBottom: 100
+          marginBottom: 100,
+          backgroundColor: Colors.primary
         }
       ]}
     >
@@ -376,7 +377,7 @@ export default Settings = ({ props }) => {
           width: "100%",
           height: Dimensions.get("window").height / 3,
           position: "absolute",
-          top: 0,
+          top: 10,
           alignItems: "center",
           justifyContent: "center"
         }}

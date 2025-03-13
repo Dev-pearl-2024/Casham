@@ -1,7 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import stylesheet from "../../../Elements/Styles";
 import { Text } from "react-native-paper";
-import { View,Platform } from "react-native";
+import { View, Platform } from "react-native";
 import TouchableScale from "@jonny/touchable-scale";
 import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
@@ -173,19 +173,12 @@ export default Withdraw = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[stylesheet.container]}>
-      <Text
+      <View
         style={{
-          fontSize: 24,
-          color: "#000",
-          fontWeight: "bold",
-          marginBottom: 0,
-          marginTop:  Platform.OS === 'android' ? 100 : 0,
-          alignSelf: "flex-start",
-          marginStart: 20
+          marginTop: Platform.OS === "android" ? 90 : 0
         }}
-      >
-        Sent
-      </Text>
+      />
+
       {renderSentData()}
     </SafeAreaView>
   );

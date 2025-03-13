@@ -206,7 +206,7 @@ const Purchase_Vouchar = (props) => {
       <View
         style={{
           position: "absolute",
-          bottom: 20,
+          bottom: 80,
           left: 0,
           width: "100%",
           alignItems: "center",
