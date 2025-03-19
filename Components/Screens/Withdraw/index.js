@@ -327,11 +327,7 @@ const Withdraw_Data = (props) => {
             alignItems: "center",
             gap: 10,
             marginHorizontal: 10,
-<<<<<<< HEAD
-            marginTop: Platform.OS === "android" ? 100 : 40,
-=======
             marginTop: Platform.OS === 'android' ? 100 : 40,
->>>>>>> 8a96a75fe5130df1cef87425e3ee053eb0b1a176
             marginBottom:20
           }}
         >

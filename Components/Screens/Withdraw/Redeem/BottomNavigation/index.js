@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     padding: 20,
     alignItems: "center",
-    zIndex: 20
+    zIndex: 30
   },
   title: {
     fontWeight: "700",

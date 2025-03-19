@@ -209,32 +209,7 @@ const Login = (props) => {
             </View>
           </View>
         </View>
-        <View
-          style={{ alignItems: "center", gap: 20, marginBottom: 20, flex: 1 }}
-        >
-          <CustomButton label={"Send OTP"} onPress={CheckUserExist} />
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontSize: 14, color: "gray" }}>
-              Don't have an account?
-            </Text>
-            <TouchableOpacity
-              onPress={() =>
-                props.navigation.replace("Registration", { role: "user" })
-              }
-            >
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: Colors.secondary,
-                  fontWeight: "bold"
-                }}
-              >
-                {" "}
-                Sign Up
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+
         <CustomSnackbar
           visible={snackVisible}
           title={snackMessage}
@@ -258,6 +233,39 @@ const Login = (props) => {
         }
         settings
       />
+      <View
+        style={{
+          position: "absolute",
+          bottom: 20,
+          alignItems: "center",
+          gap: 20,
+          marginBottom: 20,
+          flex: 1
+        }}
+      >
+        <CustomButton label={"Send OTP"} onPress={CheckUserExist} />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={{ fontSize: 14, color: "gray" }}>
+            Don't have an account?
+          </Text>
+          <TouchableOpacity
+            onPress={() =>
+              props.navigation.replace("Registration", { role: "user" })
+            }
+          >
+            <Text
+              style={{
+                fontSize: 14,
+                color: Colors.secondary,
+                fontWeight: "bold"
+              }}
+            >
+              {" "}
+              Sign Up
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };

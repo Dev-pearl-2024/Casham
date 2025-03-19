@@ -367,11 +367,7 @@ export default Settings = ({ props }) => {
         stylesheet.container,
         {
           marginBottom: 100,
-<<<<<<< HEAD
-          backgroundColor: Colors.primary
-=======
           backgroundColor:Colors.primary
->>>>>>> 8a96a75fe5130df1cef87425e3ee053eb0b1a176
         }
       ]}
     >
