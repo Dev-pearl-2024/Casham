@@ -162,7 +162,7 @@ const Login = (props) => {
         }}
       >
         <BackButton props={props} />
-      </View> */}
+      </View> */} 
       <ScrollView
         style={{}}
         showsVerticalScrollIndicator={false}
