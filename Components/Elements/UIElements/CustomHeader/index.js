@@ -12,7 +12,7 @@ const CustomHeader = ({ props, header_name }) => {
     primary: "#007AFF",
     text: "#000000"
   };
-  return (
+  return ( 
     <View
       style={{  
         flexDirection: "row",
