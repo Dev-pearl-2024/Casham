@@ -40,7 +40,10 @@ const BottomModal = ({ visible, navigation, setIsModalVisible, props }) => {
   if (!visible) return null;
 
   const handleVerify = async () => {
-    console.log("Entered Code:", inputValue);
+    if (inputValue.length < 14) {
+      Alert.alert("Oops", "Please enter the correct Voucher code");
+      return;
+    }
     setLoading(true);
     try {
       const formData = new FormData();
@@ -193,6 +196,7 @@ const BottomModal = ({ visible, navigation, setIsModalVisible, props }) => {
             onChangeText={setInputValue}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            maxLength={14}
           />
           {verified ? (
             <TouchableOpacity
@@ -203,8 +207,15 @@ const BottomModal = ({ visible, navigation, setIsModalVisible, props }) => {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              style={styles.verifyButton}
+              style={[
+                styles.verifyButton,
+                {
+                  backgroundColor:
+                    inputValue.length === 14 ? "#007AFF" : "rgb(141, 138, 138)"
+                }
+              ]}
               onPress={handleVerify}
+              activeOpacity={inputValue.length === 14 ? 0.6 : 1}
             >
               <Text style={styles.verifyButtonText}>Verify</Text>
             </TouchableOpacity>

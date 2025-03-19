@@ -130,7 +130,7 @@ const Withdraw_Data = (props) => {
                 alignItems: "center",
                 justifyContent: "spa",
                 paddingHorizontal: 15,
-                paddingVertical: 2,
+                paddingVertical: 5,
                 gap: 20
               }}
               onPress={() => {

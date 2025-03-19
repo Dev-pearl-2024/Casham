@@ -8,7 +8,8 @@ import {
   StyleSheet,
   Dimensions,
   TouchableWithoutFeedback,
-  Platform
+  Platform,
+  Image
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -96,7 +97,11 @@ const FloatingActionButton = ({ props, setExpanded, expanded }) => {
               style={styles.subButton}
               onPress={() => props.navigation.navigate("Purchase_Vouchar")}
             >
-              <Icon name="dollar" size={20} color="#333" />
+              {/* <Icon name="dollar" size={20} color="#333" /> */}
+              <Image
+                style={{ width: 20, height: 20 }}
+                source={require("../../../Elements/Images/currency.png")}
+              />
               <Text style={styles.subButtonText}>Purchase</Text>
             </TouchableOpacity>
           )}
@@ -121,7 +126,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
-    zIndex: Platform.OS === "android" ?  30 : 0
+    zIndex: Platform.OS === "android" ? 30 : 0
   },
   container: {
     position: "absolute",
@@ -142,7 +147,7 @@ const styles = StyleSheet.create({
   subButtonContainer: {
     position: "absolute",
     right: 0,
-    zIndex:30
+    zIndex: 30
   },
   subButton: {
     flexDirection: "row",
@@ -154,7 +159,8 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    width: 100
+    width: 110,
+    justifyContent:"center"
   },
   subButtonText: {
     marginLeft: 8,
