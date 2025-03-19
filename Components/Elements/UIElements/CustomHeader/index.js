@@ -14,7 +14,7 @@ const CustomHeader = ({ props, header_name }) => {
   };
   return (
     <View
-      style={{
+      style={{  
         flexDirection: "row",
         alignItems: "center",
         //          paddingVertical: 20,
