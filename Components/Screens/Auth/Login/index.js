@@ -153,7 +153,7 @@ const Login = (props) => {
 
   return (
     <SafeAreaView style={stylesheet.container}>
-      <View
+      {/* <View
         style={{
           width: "100%",
           marginVertical: 10,
@@ -162,11 +162,11 @@ const Login = (props) => {
         }}
       >
         <BackButton props={props} />
-      </View>
+      </View> */}
       <ScrollView
         style={{}}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{}}
+        contentContainerStyle={{ marginTop: 20 }}
       >
         <View
           style={{
