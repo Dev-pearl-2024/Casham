@@ -109,7 +109,7 @@ export default Withdraw = ({ navigation }) => {
       <>
         {transactionsData?.map((item, index) => {
           return (
-            <>
+            <View key={index}>
               {item.originName === data?.name && (
                 <TouchableScale
                   style={{
@@ -164,7 +164,7 @@ export default Withdraw = ({ navigation }) => {
                   </View>
                 </TouchableScale>
               )}
-            </>
+            </View>
           );
         })}
       </>
