@@ -10,7 +10,7 @@ const responsiveFontSize = (fontSize) => (fontSize * SCREEN_WIDTH) / 375;
 const CustomHeader = ({ props, header_name }) => {
   const Colors = {
     primary: "#007AFF",
-    text: "#000000"
+    text: "#000000" 
   };
   return ( 
     <View
@@ -30,6 +30,7 @@ const CustomHeader = ({ props, header_name }) => {
         right: 0,
         left: 0,
         zIndex:Platform.OS === 'android' ? 20 : 0
+        // add something
       }}
     >
       <TouchableOpacity
