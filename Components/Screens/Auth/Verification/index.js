@@ -102,23 +102,26 @@ const Verification = (props) => {
       } else if (response.status === 200) {
         console.log("login details-> ", response.data);
 
-        const { api_key, device_token, userDetails } = response.data;
+        const { api_key, device_token, userDetails, status } = response.data;
 
         await AsyncStorage.setItem("api_token", api_key);
         await AsyncStorage.setItem("device_token", device_token);
 
         setLoading(false);
-
-        if (userDetails) {
+        console.log("userDetails :- ", props.route.params.status);
+        if (props.route.params.status === 201) {
+          // props.navigation.reset({
+          //   index: 0,
+          //   routes: [{ name: "BankScreen" }]
+          // });
+          props.navigation.replace("Pin", { mode: "create" });
+          return;
+        } else if (userDetails && props.route.params.status !== 201) {
           props.navigation.reset({
             index: 0,
             routes: [{ name: "Dashboard" }]
           });
-        } else {
-          props.navigation.reset({
-            index: 0,
-            routes: [{ name: "BankScreen" }]
-          });
+          console.log(userDetails);
         }
       }
     } catch (error) {

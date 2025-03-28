@@ -275,50 +275,6 @@ const Withdraw_Data = (props) => {
   return (
     <Provider>
       <SafeAreaView style={{ flex: 1 }}>
-        {/* <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            paddingVertical: 20,
-            backgroundColor: "white",
-            shadowColor: "blue",
-            shadowOpacity: 0.5,
-            shadowOffset: { width: 0, height: 5 },
-            shadowRadius: 5,
-            elevation: 5,
-            padding: 10
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 10,
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-            onPress={() => {
-              props.navigation.goBack();
-            }}
-            hitSlop={40}
-          >
-            <MaterialIcons name="arrow-back-ios-new" size={22} color={"gray"} />
-          </TouchableOpacity>
-          <Image
-            source={require("../../Elements/Images/standalonelogo.png")}
-            style={{ width: 30, height: 30, marginLeft: 10 }}
-          />
-          <Text
-            style={{
-              fontSize: responsiveFontSize(22),
-              fontWeight: "bold",
-              color: Colors.primary,
-              marginLeft: 10
-            }}
-          >
-            Withdraw
-          </Text>
-        </View> */}
         <CustomHeader props={props} header_name={"Withdraw"} />
         <View
           style={{
@@ -327,8 +283,8 @@ const Withdraw_Data = (props) => {
             alignItems: "center",
             gap: 10,
             marginHorizontal: 10,
-            marginTop: Platform.OS === 'android' ? 100 : 40,
-            marginBottom:20
+            marginTop: Platform.OS === "android" ? 100 : 40,
+            marginBottom: 20
           }}
         >
           <TouchableOpacity
@@ -374,37 +330,6 @@ const Withdraw_Data = (props) => {
         >
           {renderReceivedData()}
         </ScrollView>
-
-        {/* Floating Action Button */}
-        {/* <Portal>
-          <FAB.Group
-            open={open}
-            visible
-            icon={open ? "close" : "plus"}
-            color="white"
-            style={{
-              position: "absolute",
-              bottom: 0,
-              right: 0
-            }}
-            fabStyle={{ backgroundColor: "#007AFF" }}
-            actions={[
-              {
-                icon: "currency-usd",
-                label: "Purchase",
-                labelTextColor: "#007AFF",
-                onPress: () => props.navigation.navigate("Purchase_Vouchar")
-              },
-              {
-                icon: "qrcode-scan",
-                label: "Redeem",
-                labelTextColor: "#007AFF",
-                onPress: () => props.navigation.navigate("Redeem_Scan")
-              }
-            ]}
-            onStateChange={({ open }) => setOpen(open)}
-          />
-        </Portal> */}
 
         <FloatingActionButton
           props={props}
